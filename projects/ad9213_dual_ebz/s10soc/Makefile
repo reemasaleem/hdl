@@ -7,6 +7,7 @@
 PROJECT_NAME := ad9213_dual_ebz_s10soc
 
 M_DEPS += ../common/ad9213_dual_qsys.tcl
+M_DEPS += ../../scripts/adi_pd.tcl
 M_DEPS += ../../common/s10soc/s10soc_system_qsys.tcl
 M_DEPS += ../../common/s10soc/s10soc_system_assign.tcl
 M_DEPS += ../../common/intel/adcfifo_qsys.tcl
