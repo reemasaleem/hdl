@@ -43,7 +43,7 @@ module axi_ltc235x #(
   parameter       FPGA_FAMILY = 0,
   parameter       SPEED_GRADE = 0,
   parameter       DEV_PACKAGE = 0,
-  parameter [0:0] LVDS_CMOS_N = 0,
+  parameter       LVDS_CMOS_N = 0,
   parameter       LANE_0_ENABLE = 1,
   parameter       LANE_1_ENABLE = 1,
   parameter       LANE_2_ENABLE = 1,
@@ -146,8 +146,8 @@ module axi_ltc235x #(
                          LANE_2_ENABLE == 1 ? 1'b1 : 1'b0,
                          LANE_1_ENABLE == 1 ? 1'b1 : 1'b0,
                          LANE_0_ENABLE == 1 ? 1'b1 : 1'b0};
-  localparam  [ 0:0]     RD_RAW_DATA = 1'b1;
-  localparam  [ 0:0]     CMOS_OR_LVDS_N = ~LVDS_CMOS_N;
+  localparam             RD_RAW_DATA = 1'b1;
+  localparam             CMOS_OR_LVDS_N = ~LVDS_CMOS_N;
   localparam  [31:0]     CONFIG = {RD_RAW_DATA, 5'b0, CMOS_OR_LVDS_N, 7'b0};
 
   // internal registers

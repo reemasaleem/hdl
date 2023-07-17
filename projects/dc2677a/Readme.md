@@ -8,9 +8,11 @@ Here are some pointers to help you:
   * Linux Drivers:
 
 Project Parameters
+
 LVDS_CMOS_N:
   * 0 - CMOS (default)
   * 1 - LVDS
+
 LTC235X_FAMILY:
   * 0 = 2358-18 (default)
   * 1 = 2358-16

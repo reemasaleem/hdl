@@ -1,40 +1,42 @@
 # LTC235x attributes
 
-set LVDS_CMOS_N         ${ad_project_params(LVDS_CMOS_N)}
-set CHIP_SELECT_N       0
-set ADC_EXTERNAL_CLK    0
-set LTC235X_FAMILY      ${ad_project_params(LTC235X_FAMILY)}
-set ADC_LANE_0_ENABLE   1
-set ADC_LANE_1_ENABLE   1
+set LVDS_CMOS_N ${ad_project_params(LVDS_CMOS_N)}
+set CHIP_SELECT_N 0
+set ADC_EXTERNAL_CLK 0
+set LTC235X_FAMILY ${ad_project_params(LTC235X_FAMILY)}
+set ADC_LANE_0_ENABLE 1
+set ADC_LANE_1_ENABLE 1
+
 if {$LTC235X_FAMILY <= 1} {
     set ADC_NUM_CHANNELS 8
-    set ADC_LANE_2_ENABLE   1
-    set ADC_LANE_3_ENABLE   1
-    set ADC_LANE_4_ENABLE   1
-    set ADC_LANE_5_ENABLE   1
-    set ADC_LANE_6_ENABLE   1
-    set ADC_LANE_7_ENABLE   1
+    set ADC_LANE_2_ENABLE 1
+    set ADC_LANE_3_ENABLE 1
+    set ADC_LANE_4_ENABLE 1
+    set ADC_LANE_5_ENABLE 1
+    set ADC_LANE_6_ENABLE 1
+    set ADC_LANE_7_ENABLE 1
 } elseif {$LTC235X_FAMILY <= 3} {
     set ADC_NUM_CHANNELS 4
-    set ADC_LANE_2_ENABLE   1
-    set ADC_LANE_3_ENABLE   1
-    set ADC_LANE_4_ENABLE   0
-    set ADC_LANE_5_ENABLE   0
-    set ADC_LANE_6_ENABLE   0
-    set ADC_LANE_7_ENABLE   0
+    set ADC_LANE_2_ENABLE 1
+    set ADC_LANE_3_ENABLE 1
+    set ADC_LANE_4_ENABLE 0
+    set ADC_LANE_5_ENABLE 0
+    set ADC_LANE_6_ENABLE 0
+    set ADC_LANE_7_ENABLE 0
 } else {
     set ADC_NUM_CHANNELS 2
-    set ADC_LANE_2_ENABLE   0
-    set ADC_LANE_3_ENABLE   0
-    set ADC_LANE_4_ENABLE   0
-    set ADC_LANE_5_ENABLE   0
-    set ADC_LANE_6_ENABLE   0
-    set ADC_LANE_7_ENABLE   0
+    set ADC_LANE_2_ENABLE 0
+    set ADC_LANE_3_ENABLE 0
+    set ADC_LANE_4_ENABLE 0
+    set ADC_LANE_5_ENABLE 0
+    set ADC_LANE_6_ENABLE 0
+    set ADC_LANE_7_ENABLE 0
 }
+
 if {$LTC235X_FAMILY % 2 == 0} {
-    set ADC_DATA_WIDTH  18
+    set ADC_DATA_WIDTH 18
 } else {
-    set ADC_DATA_WIDTH  16
+    set ADC_DATA_WIDTH 16
 }
 
 # axi_ltc235x
@@ -125,7 +127,7 @@ add_connection axi_adc_dma.if_fifo_wr_overflow util_adc_pack.if_packed_fifo_wr_o
 
 ad_cpu_interrupt 2 axi_adc_dma.interrupt_sender
 
-# cpu interconnects / address map (TODO: are the addresses not wrong?)
+# cpu interconnects / address map
 
 ad_cpu_interconnect 0x00120000 axi_ltc235x.s_axi
 ad_cpu_interconnect 0x00140000 adc_pwm_gen.s_axi
