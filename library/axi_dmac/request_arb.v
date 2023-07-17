@@ -250,6 +250,7 @@ module request_arb #(
   wire src_req_ready;
   wire [DMA_ADDRESS_WIDTH_DEST-1:0] src_req_dest_address;
   wire [DMA_ADDRESS_WIDTH_SRC-1:0] src_req_src_address;
+  wire [BYTES_PER_BURST_WIDTH-1:0] src_req_length;
   wire [BEATS_PER_BURST_WIDTH_SRC-1:0] src_req_last_burst_length;
   wire [BYTES_PER_BEAT_WIDTH_SRC-1:0] src_req_last_beat_bytes;
   wire src_req_sync_transfer_start;
@@ -331,6 +332,14 @@ module request_arb #(
   begin
     eot_mem_dest[source_id] <= source_eot;
   end
+
+  generate if (BEATS_PER_BURST_WIDTH_SRC>0) begin
+    assign src_req_last_burst_length = src_req_length[BYTES_PER_BURST_WIDTH-1 : BYTES_PER_BEAT_WIDTH_SRC];
+    assign src_req_last_beat_bytes = src_req_length[BYTES_PER_BEAT_WIDTH_SRC-1:0];
+  end else begin
+    assign src_req_last_burst_length = 1'b0;
+    assign src_req_last_beat_bytes = src_req_length;
+  end endgenerate
 
   generate if (DMA_TYPE_DEST == DMA_TYPE_MM_AXI) begin
 
@@ -1056,8 +1065,7 @@ module request_arb #(
     .m_axis_data({
       src_req_dest_address,
       src_req_src_address,
-      src_req_last_burst_length,
-      src_req_last_beat_bytes,
+      src_req_length,
       src_req_sync_transfer_start,
       src_req_xlast}),
     .m_axis_level(),

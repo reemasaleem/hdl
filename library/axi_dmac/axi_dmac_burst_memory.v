@@ -145,7 +145,6 @@ module axi_dmac_burst_memory #(
   reg [ID_WIDTH-1:0] src_id_next;
   reg [ID_WIDTH-1:0] src_id = 'h0;
   reg src_id_reduced_msb = 1'b0;
-  reg [BURST_LEN_WIDTH_SRC-1:0] src_beat_counter = 'h00;
 
   reg [ID_WIDTH-1:0] dest_id_next = 'h0;
   reg dest_id_reduced_msb_next = 1'b0;
@@ -200,7 +199,6 @@ module axi_dmac_burst_memory #(
 
   assign src_beat = src_mem_data_valid;
   assign src_last_beat = src_beat & src_mem_data_last;
-  assign src_waddr = {src_id_reduced,src_beat_counter};
 
   assign src_data_request_id = src_dest_id;
 
@@ -222,13 +220,32 @@ module axi_dmac_burst_memory #(
     end
   end
 
-  always @(posedge src_clk) begin
-    if (src_reset == 1'b1 || src_last_beat == 1'b1) begin
-      src_beat_counter <= 'h00;
-    end else if (src_beat == 1'b1) begin
-      src_beat_counter <= src_beat_counter + 1'b1;
+  /*
+   * When the burst is only one beat wide, the src_beat_counter logic can be removed,
+   * since the current beat is actually the last in the burst. This scenario happens
+   * when the MAX_BYTES_PER_BURST value matches the DATA_WIDTH_SRC value in bytes.
+   */
+  generate if (BURST_LEN_WIDTH_SRC > 0) begin
+    reg [BURST_LEN_WIDTH_SRC-1:0] src_beat_counter = 'h00;
+
+    always @(posedge src_clk) begin
+      if (src_reset == 1'b1 || src_last_beat == 1'b1) begin
+        src_beat_counter <= 'h00;
+      end else if (src_beat == 1'b1) begin
+        src_beat_counter <= src_beat_counter + 1'b1;
+      end
     end
-  end
+
+
+    assign src_burst_len_data = {src_mem_data_partial_burst,
+                                 src_beat_counter,
+                                 src_mem_data_valid_bytes};
+    assign src_waddr = {src_id_reduced,src_beat_counter};
+  end else begin
+    assign src_burst_len_data = {src_mem_data_partial_burst,
+                                 src_mem_data_valid_bytes};
+    assign src_waddr = src_id_reduced;
+  end endgenerate
 
   always @(posedge src_clk) begin
     if (src_last_beat == 1'b1) begin
@@ -381,10 +398,6 @@ module axi_dmac_burst_memory #(
     .mem_data_last (src_mem_data_last),
     .mem_data_valid_bytes (src_mem_data_valid_bytes),
     .mem_data_partial_burst (src_mem_data_partial_burst));
-
-  assign src_burst_len_data = {src_mem_data_partial_burst,
-                               src_beat_counter,
-                               src_mem_data_valid_bytes};
 
   ad_mem_asym #(
     .A_ADDRESS_WIDTH (ADDRESS_WIDTH_SRC),
