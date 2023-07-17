@@ -135,7 +135,3 @@ ad_cpu_interconnect 0x00100000 axi_adc_dma.s_axi
 
 ad_dma_interconnect axi_adc_dma.m_dest_axi 1
 
-# set cs_n and pd HIGH in default
-
-set_instance_parameter_value sys_gpio_out {bitModifyingOutReg} {1}
-set_instance_parameter_value sys_gpio_out {resetValue} {3}
