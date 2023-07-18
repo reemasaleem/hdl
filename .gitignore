@@ -103,4 +103,6 @@ qdb
 tmp-clearbox
 *.bin
 .qsys_edit
-_build
+docs/_build
+docs/**/*.pyc
+!docs/**/*.csv

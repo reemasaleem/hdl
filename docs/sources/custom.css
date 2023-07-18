@@ -56,3 +56,6 @@ iframe {
 table.regmap {
 	font-size: .75em;
 }
+table.regmap .caption-text{
+	font-size: 1rem;
+}

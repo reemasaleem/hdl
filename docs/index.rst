@@ -8,6 +8,7 @@ HDL Reference Designs
    :hidden:
 
    library/spi_engine/index
+   library/axi_dmac/index
 
 .. toctree::
    :caption: Contributing

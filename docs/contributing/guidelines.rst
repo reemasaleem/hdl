@@ -5,8 +5,19 @@ A brief set-of-rules for the documentation.
 
 .. note::
    The old wiki uses `dokuwiki <https://www.dokuwiki.org/dokuwiki>`_. When
-   importing text from there, consider the automate options that are provided
-   accross this page to convert it to :term:`reST`.
+   importing text from there, consider the automated options that are provided
+   in this page to convert it to :term:`reST`.
+
+Templates
+--------------------------------------------------------------------------------
+
+Templates are available:
+
+* :git-hdl:`docs/library/template_ip` (:ref:`rendered <template_ip>`).
+* :git-hdl:`docs/library/template_framework` (:ref:`rendered <template_framework>`).
+
+Remove the ``:orphan:`` in the first line, it is to hide the templates from the
+`TOC tree <https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree>`_.
 
 Indentation
 --------------------------------------------------------------------------------
@@ -133,8 +144,12 @@ Git role
 The Git role allows to create links to the Git repository with a shorter syntax.
 The role syntax is :code:`:git-<repo>:\`<branch>:<path>\``, for example,
 :code:`:git-hdl:\`master:contributing/guidelines.rst\``
-gets rendered as :git-hdl:`master:contributing/guidelines.rst`.
+is rendered as :git-hdl:`master:contributing/guidelines.rst`.
 You can leave the branch blank to autofill the link with the current branch.
+
+You can also do :code:`:git-<repo>:\`/\`` for a link to the root of the
+repository with pretty naming, for example, :code:`:git-hdl:\`/\`` is rendered
+as :git-hdl:`/`.
 
 Part role
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -145,7 +160,7 @@ The role syntax is :code:`:part:\`<part_id>:<part_name>\``, for example,
 :code:`:part:\`ad7175-2:AD7175-2\``.
 Since links are case insensitive, you can also reduce it to
 :code:`:part:\`AD7175-2\``, when *part_id* is the same as *part_name*.
-It gets rendered as :part:`AD7175-2`.
+It is rendered as :part:`AD7175-2`.
 
 Datasheet role
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -154,7 +169,7 @@ The datasheet role creates links for a datasheet in the Analog Devices website.
 
 The role syntax is :code:`:datasheet:\`<part_id>:<anchor>\``, for example,
 :code:`:datasheet:\`AD7984:[{"num"%3A51%2C"gen"%3A0}%2C{"name"%3A"XYZ"}%2C52%2C713%2C0]\`
-gets rendered as
+is rendered as
 :datasheet:`AD7984:[{"num"%3A51%2C"gen"%3A0}%2C{"name"%3A"XYZ"}%2C52%2C713%2C0]`.
 The anchor is optional and is a link to a section of the PDF, and can be obtained
 by just copying the link in the table of contents.
@@ -172,6 +187,24 @@ The role syntax is :code:`:dokuwiki:\`<name>:<path>\``, for example,
 :code:`:dokuwiki:\`pulsar-adc-pmods:resources/eval/user-guides/circuits-from-the-lab/pulsar-adc-pmods\``
 gets rendered as
 :dokuwiki:`pulsar-adc-pmods:resources/eval/user-guides/circuits-from-the-lab/pulsar-adc-pmods`.
+
+EngineerZone role
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ez role creates links to the Analog Devices EngineerZone support website.
+The role syntax is :code:`:ez:\`<community>\``, for example, :code:`:ez:\`fpga\``
+gets rendered as :ez:`fpga`.
+
+Xilinx role
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The xilinx role creates links to the Xilinx website.
+The role syntax is :code:`:xilinx:\`<name>:<path>\``, for example,
+:code:`:xilinx:\`Zynq-7000 SoC Overview:support/documentation/data_sheets/ds190-Zynq-7000-Overview.pdf\``
+gets rendered
+:xilinx:`Zynq-7000 SoC Overview:support/documentation/data_sheets/ds190-Zynq-7000-Overview.pdf`.
+
+The name parameter is optional, if absent, the file name will be used as the name.
 
 .. _installing_pandoc:
 

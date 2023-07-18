@@ -56,7 +56,7 @@ Interfaces
 Software
 --------------------------------------------------------------------------------
 
-* `Linux Driver <https://wiki.analog.com/resources/tools-software/linux-drivers/spi/spi_engine>`_:
+* :dokuwiki:`Linux Driver:resources/tools-software/linux-drivers/spi/spi_engine`:
   Linux driver for the SPI Engine framework.
 * :ref:`spi_engine instruction-format`: Overview of the SPI Engine Instruction
   format.

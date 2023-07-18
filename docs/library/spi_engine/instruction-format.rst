@@ -46,7 +46,7 @@ accepted/becomes available.
        the SDO pin.
    * - n
      - Length
-     - n + 1 number of words will be transferred.
+     - n + 1 number of words that will be transferred.
 
 Chip-select Instruction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,9 +63,13 @@ SPI Engine execution module.
 Before and after the update is performed the execution module is paused for the
 specified delay. The length of the delay depends on the module clock frequency,
 the setting of the prescaler register and the t parameter of the instruction.
-delay = t \* (div + 1) / f_clk. This delay is inserted before and after the
-update of the chip-select signal, so the total execution time of the chip-select
+This delay is inserted before and after the update of the chip-select signal,
+so the total execution time of the chip-select
 instruction is twice the delay.
+
+.. math::
+
+   delay = t * \frac{div + 1}{f_{clk}}
 
 .. list-table::
    :widths: 10 15 75

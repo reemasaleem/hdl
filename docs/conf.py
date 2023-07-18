@@ -25,7 +25,9 @@ extensions = [
     "git",
     "part",
     "dokuwiki",
-    "datasheet"
+    "datasheet",
+    "ez",
+    "xilinx"
 ]
 
 templates_path = ['sources/template']
@@ -38,6 +40,8 @@ git_org_url = 'https://github.com/analogdevicesinc'
 part_url = 'https://www.analog.com/products'
 dokuwiki_url = 'https://wiki.analog.com'
 datasheet_url = 'https://www.analog.com/media/en/technical-documentation/data-sheets/'
+ez_url = 'https://ez.analog.com'
+xilinx_url = 'https://www.xilinx.com'
 
 # -- todo configuration -------------------------------------------------------
 
