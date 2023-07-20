@@ -4,6 +4,12 @@ HDL Reference Designs
 ===============================================================================
 
 .. toctree::
+   :caption: User guide
+   :hidden:
+
+   user_guide/index
+
+.. toctree::
    :caption: Libraries
    :hidden:
 
