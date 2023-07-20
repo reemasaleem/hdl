@@ -27,31 +27,22 @@ Files
 Configuration Parameters
 --------------------------------------------------------------------------------
 
-.. list-table::
-   :widths: 15 80 5
-   :header-rows: 1
+.. hdl-parameters::
+   :path: library/spi_engine/spi_engine_execution
 
-   * - Name
-     - Description
-     - Default
-   * - ``NUM_CS``
+   * - NUM_OF_CS
      - Number of chip-select signals for the SPI bus (min: 1, max: 8).
-     - 1
-   * - ``DEFAULT_SPI_CFG``
+   * - DEFAULT_SPI_CFG
      - Reset configuration value for the
        :ref:`spi_engine spi-configuration-register`
-     - 0
-   * - ``DEFAULT_CLK_DIV``
+   * - DEFAULT_CLK_DIV
      - Reset configuration value for the
        :ref:`spi_engine prescaler-configuration-register`
-     - 0
-   * - ``DATA_WIDTH``
+   * - DATA_WIDTH
      - Data width of the parallel data stream. Will define the transaction's
        granularity. Supported values: 8/16/24/32
-     - 8
-   * - ``NUM_CS``
+   * - NUM_OF_SDI
      - Number of multiple SDI lines, (min: 1, max: 8)
-     - 1
 
 Signal and Interface Pins
 --------------------------------------------------------------------------------

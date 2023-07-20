@@ -33,16 +33,11 @@ Block Diagram
 Configuration Parameters
 --------------------------------------------------------------------------------
 
-.. list-table::
-   :header-rows: 1
+.. hdl-parameters::
+   :path: library/spi_engine/spi_engine_interconnect
 
-   * - Name
-     - Description
-     - Default
-   * - ``ID``
-     - Instance identification number.
-     - 0
-
+   * - DATA_WIDTH
+     - Data width of the parallel SDI/SDO data interfaces.
 
 .. _template_ip interface:
 

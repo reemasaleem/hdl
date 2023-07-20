@@ -82,7 +82,7 @@ The :code:`list-tables` parameter requires *pandoc-types* >= 1.23, if it is not
 an option, you shall remove it and export in the *grid* table format.
 
 Now you only have to adjust the widths and give the final touches, like using
-the correct directives and roles 😉️.
+the correct directives and roles.
 
 Images
 --------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ generate component diagrams.
    Check :git-hdl:`docs/Containterfile` for a recipe to install these
    tools, either in the host or in a container.
 
-Symbolator
+Symbolator directive
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `Symbolator <https://kevinpt.github.io/symbolator/>`_ is a tool to generate
@@ -168,7 +168,7 @@ Datasheet role
 The datasheet role creates links for a datasheet in the Analog Devices website.
 
 The role syntax is :code:`:datasheet:\`<part_id>:<anchor>\``, for example,
-:code:`:datasheet:\`AD7984:[{"num"%3A51%2C"gen"%3A0}%2C{"name"%3A"XYZ"}%2C52%2C713%2C0]\`
+:code:`:datasheet:\`AD7984:[{"num"%3A51%2C"gen"%3A0}%2C{"name"%3A"XYZ"}%2C52%2C713%2C0]\``
 is rendered as
 :datasheet:`AD7984:[{"num"%3A51%2C"gen"%3A0}%2C{"name"%3A"XYZ"}%2C52%2C713%2C0]`.
 The anchor is optional and is a link to a section of the PDF, and can be obtained
@@ -205,6 +205,58 @@ gets rendered
 :xilinx:`Zynq-7000 SoC Overview:support/documentation/data_sheets/ds190-Zynq-7000-Overview.pdf`.
 
 The name parameter is optional, if absent, the file name will be used as the name.
+
+HDL parameters directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The HDL parameters directive parses the *\*_hw.tcl* library files to generate a
+table with the IP parameters.
+
+.. attention::
+
+   This directive does not support parameters generated in a foreach loop yet
+   (e.g. :git-hdl:`library/axi_dmac/axi_dmac_hw.tcl#L90`).
+   Manually create the parameters table in these cases.
+
+The directive syntax is:
+
+.. code:: rst
+
+   .. hdl-parameters::
+      :path: <ip_path>
+
+      * - <parameter>
+        - <description>
+
+For example:
+
+.. code:: rst
+
+   .. hdl-parameters::
+      :path: library/spi_engine/spi_engine_interconnect
+
+      * - DATA_WIDTH
+        - Data width of the parallel SDI/SDO data interfaces.
+      * - NUM_OF_SDI
+        - Number of SDI lines on the physical SPI interface.
+
+Gets rendered as:
+
+.. hdl-parameters::
+   :path: library/spi_engine/spi_engine_interconnect
+
+   * - DATA_WIDTH
+     - Data width of the parallel SDI/SDO data interfaces.
+   * - NUM_OF_SDI
+     - Number of SDI lines on the physical SPI interface.
+
+Notice how the *Type* and *Default* values are obtained from the *\*_hw.tcl*.
+Parameters not listed in the directive are also added to the table, but
+will have an empty description, unless a comment follows the ``ad_ip_parameter``
+method in the source file.
+
+If you are felling adventurous, the ``:path:`` option is optional, and the
+extension will guess the path to the library.
 
 .. _installing_pandoc:
 

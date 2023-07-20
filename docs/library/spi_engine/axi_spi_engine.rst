@@ -31,29 +31,20 @@ Files
 Configuration Parameters
 --------------------------------------------------------------------------------
 
-.. list-table::
-   :widths: 15 80 5
-   :header-rows: 1
+.. hdl-parameters::
+   :path: library/spi_engine/axi_spi_engine
 
-   * - Name
-     - Description
-     - Default
-   * - ``ASYNC_SPI_CLK``
+   * - ASYNC_SPI_CLK
      - If set to 1 the ``s_axi_aclk`` and ``spi_clk`` clocks are assumed
        to be asynchronous.
-     - 1
-   * - ``CMD_FIFO_ADDRESS_WIDTH``
+   * - CMD_FIFO_ADDRESS_WIDTH
      - Configures the size of the command FIFO.
-     - 4
-   * - ``SDO_FIFO_ADDRESS_WIDTH``
+   * - SDO_FIFO_ADDRESS_WIDTH
      - Configures the size of the serial-data out FIFO.
-     - 5
-   * - ``SDI_FIFO_ADDRESS_WIDTH``
+   * - SDI_FIFO_ADDRESS_WIDTH
      - Configures the size of the serial-data in FIFO.
-     - 5
-   * - ``NUM_OFFLOAD``
+   * - NUM_OFFLOAD
      - The number of offload control interfaces.
-     - 0
 
 Signal and Interface Pins
 --------------------------------------------------------------------------------

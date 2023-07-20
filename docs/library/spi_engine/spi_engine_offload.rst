@@ -28,25 +28,18 @@ Files
 Configuration Parameters
 --------------------------------------------------------------------------------
 
-.. list-table::
-   :widths: 15 80 5
-   :header-rows: 1
+.. hdl-parameters::
+   :path: library/spi_engine/spi_engine_offload
 
-   * - Name
-     - Description
-     - Default
-   * - ``SPI_CLK_ASYNC``
+   * - ASYNC_SPI_CLK
      - If set to 1 the ``ctrl_clk`` and ``spi_clk`` are assumed to be
        asynchronous.
-     - 0
-   * - ``CMD_MEM_ADDR_WIDTH``
+   * - CMD_MEM_ADDRESS_WIDTH
      - Configures the size of the command stream storage. The size is
        ``2**CMD_MEM_ADDR_WIDTH`` entries.
-     - 4
-   * - ``SDO_MEM_ADDR_WIDTH``
+   * - SDO_MEM_ADDRESS_WIDTH
      - Configures the size of the SDO data stream storage. The size is
        ``2**SDO_MEM_ADDR_WIDTH`` entries.
-     - 4
 
 Signal and Interface Pins
 --------------------------------------------------------------------------------

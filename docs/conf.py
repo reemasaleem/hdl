@@ -16,32 +16,22 @@ import os, sys
 sys.path.append(os.path.abspath("./extensions"))
 
 extensions = [
-    "sphinx.ext.todo",
-    "sphinx.ext.viewcode",
-    "sphinxcontrib.bibtex",
-    "sphinxcontrib.mermaid",
-    "sphinxcontrib.wavedrom",
-    "symbolator_sphinx",
-    "git",
-    "part",
-    "dokuwiki",
-    "datasheet",
-    "ez",
-    "xilinx"
+	"sphinx.ext.todo",
+	"sphinx.ext.viewcode",
+	"sphinxcontrib.bibtex",
+	"sphinxcontrib.mermaid",
+	"sphinxcontrib.wavedrom",
+	"symbolator_sphinx",
+	"adi_links",
+	"adi_hdl_parser"
 ]
 
 templates_path = ['sources/template']
 
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-# -- Custom extensions configuraion -------------------------------------------
+# -- Custom extensions configuration -------------------------------------------
 
-git_org_url = 'https://github.com/analogdevicesinc'
-part_url = 'https://www.analog.com/products'
-dokuwiki_url = 'https://wiki.analog.com'
-datasheet_url = 'https://www.analog.com/media/en/technical-documentation/data-sheets/'
-ez_url = 'https://ez.analog.com'
-xilinx_url = 'https://www.xilinx.com'
 
 # -- todo configuration -------------------------------------------------------
 

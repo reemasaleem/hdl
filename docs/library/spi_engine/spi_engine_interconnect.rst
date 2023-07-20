@@ -37,19 +37,13 @@ Files
 Configuration Parameters
 --------------------------------------------------------------------------------
 
-.. list-table::
-   :widths: 15 80 5
-   :header-rows: 1
+.. hdl-parameters::
+   :path: library/spi_engine/spi_engine_interconnect
 
-   * - Name
-     - Description
-     - Default
-   * - ``DATA_WIDTH``
+   * - DATA_WIDTH
      - Data width of the parallel SDI/SDO data interfaces.
-     - 8
-   * - ``NUM_OF_SDI``
+   * - NUM_OF_SDI
      - Number of SDI lines on the physical SPI interface.
-     - 1
 
 
 Signal and Interface Pins
