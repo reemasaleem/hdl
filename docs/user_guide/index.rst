@@ -1,4 +1,4 @@
-HDL User Guide
+ADI™ Reference Designs HDL User Guide
 ===============================================================================
 
 Analog Devices provides FPGA reference designs for selected hardware featuring 
@@ -9,11 +9,30 @@ A list of supported hardware can be found at:
 - Intel (intel_reference_designs)
 - Xilinx (xilinx_reference_designs)
 
+Contents
+--------------------------------------------------------------------------------
+
+To add: links to pages
+
+#. Introduction
+#. Git repository
+#. Releases and supported tool versions
+#. Building & Generating programming files
+#. Running software on hardware
+#. Architecture
+#. IP Cores
+#. Using and modifying the HDL design
+#. Third party forks with derived work
+
+
 Projects list
 --------------------------------------------------------------------------------
 
 By carrier
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To add: complete list of projects, and if it can be auto-generated
+
 .. list-table::
    :header-rows: 1
 
@@ -26,32 +45,32 @@ By carrier
    * - a10soc
      - ad9081_fmca_ebz
      - TBD
+     - TBD
+     - TBD
+     - TBD
    * - Xilinx Artix 7
+     - TBD
+     - TBD
+     - TBD
      - TBD
      - TBD
    * - Xilinx Kintex 7
      - TBD
      - TBD
+     - TBD
+     - TBD
+     - TBD
    * - Xilinx Virtex 7
      - TBD
      - TBD
+     - TBD
+     - TBD
+     - TBD
 
 
-Sizing of the internal store-and-forward data buffer
+Header 2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-AXI-Streaming slave
+Header 3
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-- Supports multiple interface types
-
-  -  AXI3/4 memory mapped
-  -  AXI4 Streaming
-  -  ADI FIFO interface
-
-- Zero-latency transfer switch-over architecture
-
-  -  Allows **continuous** high-speed streaming
-
-- Cyclic transfers
-- 2D transfers
 
