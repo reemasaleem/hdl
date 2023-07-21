@@ -141,4 +141,3 @@ ad_cpu_interconnect 0x00100000 axi_adc_dma.s_axi
 # mem interconnects / dma interconnects
 
 ad_dma_interconnect axi_adc_dma.m_dest_axi 1
-
