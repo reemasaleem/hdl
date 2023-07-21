@@ -287,9 +287,14 @@ module axi_ltc235x_cmos #(
     end
   end
 
-  // lane_x_ch - channel corresponds to which lane, e.g. lane_0_ch stores the current channel lane 0 has
-  // ch_data_lock[i] - locks ch i, e.g. ch_data_lock[7] = 1 means data from channel 7 has already been sent to an active lane, channel 7 should now be locked
-  // dont acquire data if all channels are all already locked
+  /*
+  lane_X_ch - channel number that lane X has
+  e.g., lane_0_ch = 2, means lane 0 has channel 2
+  ch_data_lock[i] - locks channel i
+  e.g., ch_data_lock[7] = 1, means data from channel 7 has already been
+  sent to an active lane, channel 7 should now be locked.
+  Don't acquire data if all channels are all already locked.
+  */
   always @(posedge clk) begin
     if (start_transfer_s) begin
       lane_0_ch <= 3'd0;
