@@ -1,3 +1,8 @@
+###############################################################################
+## Copyright (C) 2023 Analog Devices, Inc. All rights reserved.
+### SPDX short identifier: ADIBSD
+###############################################################################
+
 # LTC235x attributes
 
 set LVDS_CMOS_N ${ad_project_params(LVDS_CMOS_N)}
