@@ -50,12 +50,19 @@ module system_top (
   wire    [94:0]  gpio_i;
   wire    [94:0]  gpio_o;
   wire            ap_rstn_frmbuf;
+  wire            ap_rstn_frmbuf1;
+  wire            ap_rstn_frmbuf2;
+  wire            ap_rstn_frmbuf3;
   wire            csirxss_rstn;
 
   assign gpio_i[94:0] = gpio_o[94:0];
 
+  assign rpi_en = gpio_o[6];
   assign csirxss_rstn = gpio_o[1];
   assign ap_rstn_frmbuf = gpio_o[2];
+  assign ap_rstn_frmbuf1 = gpio_o[3];
+  assign ap_rstn_frmbuf2 = gpio_o[4];
+  assign ap_rstn_frmbuf3 = gpio_o[5];
   assign fan_en_b = gpio_o[0];
 
   // instantiations
@@ -63,8 +70,11 @@ module system_top (
     .IIC_0_scl_io (iic_scl_io),
     .IIC_0_sda_io (iic_sda_io),
     .ap_rstn_frmbuf (ap_rstn_frmbuf),
+    .ap_rstn_frmbuf1 (ap_rstn_frmbuf1),
+    .ap_rstn_frmbuf2 (ap_rstn_frmbuf2),
+    .ap_rstn_frmbuf3 (ap_rstn_frmbuf3),
     .csirxss_rstn (csirxss_rstn),
-    .rpi_en (rpi_en),
+   // .rpi_en (rpi_en),
     .mipi_phy_if_0_data_n (mipi_phy_if_0_data_n),
     .mipi_phy_if_0_data_p (mipi_phy_if_0_data_p),
     .mipi_phy_if_0_clk_n (mipi_phy_if_0_clk_n),
