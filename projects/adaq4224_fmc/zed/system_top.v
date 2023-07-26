@@ -101,7 +101,7 @@ module system_top #(
   inout   [ 1:0]  adaq4224_pgia_gain_ctrl,
   
   inout           max17687_rst,
-  inout           max17687_en,
+  output          max17687_en,
   output          max17687_sync_clk
 );
 
@@ -123,7 +123,8 @@ module system_top #(
 
   // instantiations
 
-  assign gpio_i[63:37] = 26'b0;
+  assign gpio_i[63:36] = 27'b0;
+  assign max17687_en = 1'b1;
 
   ad_data_clk #(
     .SINGLE_ENDED (1)
@@ -144,13 +145,12 @@ module system_top #(
     .clk (adaq4224_echo_sclk_s));
 
   ad_iobuf #(
-    .DATA_WIDTH(5)
+    .DATA_WIDTH(4)
   ) i_adaq4224_gpio_iobuf (
-    .dio_t(gpio_t[36:32]),
-    .dio_i(gpio_o[36:32]),
-    .dio_o(gpio_i[36:32]),
-    .dio_p ({ max17687_en,              // 36
-              max17687_rst,             // 35
+    .dio_t(gpio_t[35:32]),
+    .dio_i(gpio_o[35:32]),
+    .dio_o(gpio_i[35:32]),
+    .dio_p ({ max17687_rst,             // 35
               adaq4224_pgia_gain_ctrl,  // 34:33
               adaq4224_resetn}));       // 32
 
