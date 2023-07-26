@@ -84,6 +84,39 @@ an option, you shall remove it and export in the *grid* table format.
 Now you only have to adjust the widths and give the final touches, like using
 the correct directives and roles.
 
+Code
+--------------------------------------------------------------------------------
+
+Prefer
+`code-blocks <https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-code-block>`_
+to
+`code <https://docutils.sourceforge.io/docs/ref/rst/directives.html#code>`_
+directives, because code-blocks have more options, such as showing line numbers
+and emphasizing lines.
+
+For example,
+
+.. code:: rst
+
+   .. code-block:: python
+      :linenos:
+      :emphasize-lines: 2
+
+      def hello_world():
+          string = "Hello world"
+          print(string)
+
+renders as
+
+.. code-block:: python
+   :linenos:
+   :emphasize-lines: 2
+
+   def hello_world():
+       string = "Hello world"
+       print(string)
+
+
 Images
 --------------------------------------------------------------------------------
 
@@ -240,7 +273,7 @@ For example:
       * - NUM_OF_SDI
         - Number of SDI lines on the physical SPI interface.
 
-Gets rendered as:
+renders as:
 
 .. hdl-parameters::
    :path: library/spi_engine/spi_engine_interconnect

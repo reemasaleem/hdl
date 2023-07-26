@@ -150,7 +150,10 @@ def depart_node_parameters(self, node):
 
 def setup(app):
 	app.add_directive('hdl-parameters', directive_parameters)
-	app.add_node(node_parameters, html=(visit_node_parameters, depart_node_parameters))
+	app.add_node(node_parameters,
+			html=(visit_node_parameters, depart_node_parameters),
+			latex=(visit_node_parameters, depart_node_parameters),
+			text=(visit_node_parameters, depart_node_parameters))
 
 	return {
 		'version': '0.1',
