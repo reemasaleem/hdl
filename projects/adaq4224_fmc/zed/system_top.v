@@ -96,8 +96,6 @@ module system_top #(
   output          adaq4224_cnv,
   input           adaq4224_busy,
   inout           adaq4224_resetn,
-  inout           iic_tscl,
-  inout           iic_tsda,
   inout   [ 1:0]  adaq4224_pgia_gain_ctrl,
   
   inout           max17687_rst,
@@ -213,8 +211,6 @@ module system_top #(
     .i2s_mclk (i2s_mclk),
     .i2s_sdata_in (i2s_sdata_in),
     .i2s_sdata_out (i2s_sdata_out),
-    .iic_temp_scl_io (iic_tscl),
-    .iic_temp_sda_io (iic_tsda),
     .iic_fmc_scl_io (iic_scl),
     .iic_fmc_sda_io (iic_sda),
     .iic_mux_scl_i (iic_mux_scl_i_s),
