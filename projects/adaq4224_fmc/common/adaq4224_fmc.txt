@@ -15,8 +15,8 @@ D08   LA01_CC_P   CNV_FMC     adaq4224_cnv        LVCMOS25      #N/A
 C22   LA18_CC_P   BUSY_FMC    adaq4224_busy       LVCMOS25      #N/A
 H04   CLK0_M2C_P  CLK         adaq4224_ext_clk    LVCMOS25      #N/A
 
-H10   LA04_P      A0_FMC      adaq4224_pgia_gain_ctrl[0]  LVCMOS25      #N/A
-H11   LA04_N      A1_FMC      adaq4224_pgia_gain_ctrl[1]  LVCMOS25      #N/A
+G12   LA08_P      A0_FMC      adaq4224_pgia_gain_ctrl[0]  LVCMOS25      #N/A
+G13   LA08_N      A1_FMC      adaq4224_pgia_gain_ctrl[1]  LVCMOS25      #N/A
 H13   LA07_P      RST         max17687_rst                LVCMOS25      #N/A
 H14   LA07_N      EN          max17687_en                 LVCMOS25      #N/A
 D21   LA17_CC_N   SYNCFMC     max17687_sync_clk           LVCMOS25      #N/A

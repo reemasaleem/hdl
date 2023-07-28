@@ -13,8 +13,8 @@ set_property -dict {PACKAGE_PIN L18 IOSTANDARD LVCMOS25} [get_ports adaq4224_ext
 set_property -dict {PACKAGE_PIN T16 IOSTANDARD LVCMOS25} [get_ports max17687_rst]                   ; ## H13  FMC_LA07_P
 set_property -dict {PACKAGE_PIN T17 IOSTANDARD LVCMOS25} [get_ports max17687_en]                    ; ## H14  FMC_LA07_N
 set_property -dict {PACKAGE_PIN B20 IOSTANDARD LVCMOS25} [get_ports max17687_sync_clk]              ; ## D21  FMC_LA17_N_CC
-set_property -dict {PACKAGE_PIN M21 IOSTANDARD LVCMOS25} [get_ports adaq4224_pgia_gain_ctrl[0]]
-set_property -dict {PACKAGE_PIN M22 IOSTANDARD LVCMOS25} [get_ports adaq4224_pgia_gain_ctrl[1]]
+set_property -dict {PACKAGE_PIN J21 IOSTANDARD LVCMOS25} [get_ports adaq4224_pgia_gain_ctrl[0]]     ; ## G12  FMC_LA08_P
+set_property -dict {PACKAGE_PIN J22 IOSTANDARD LVCMOS25} [get_ports adaq4224_pgia_gain_ctrl[1]]     ; ## G13  FMC_LA08_N
 
 set_property -dict {PACKAGE_PIN J18 IOSTANDARD LVCMOS25 PULLTYPE PULLUP} [get_ports iic_tscl]       ; ## D11  FMC_LPC_LA05_P
 set_property -dict {PACKAGE_PIN K18 IOSTANDARD LVCMOS25 PULLTYPE PULLUP} [get_ports iic_tsda]       ; ## D12  FMC_LPC_LA05_N
