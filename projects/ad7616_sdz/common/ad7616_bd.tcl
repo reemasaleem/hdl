@@ -69,12 +69,12 @@ if {$SI_OR_PI == 0} {
   ad_connect  sys_cpu_clk axi_ad7616_dma/s_axis_aclk
   ad_connect  axi_ad7616_dma/s_axis $hier_spi_engine/m_axis_sample
 
-  ad_connect busy_sync/out_resetn $hier_spi_engine/axi_regmap/spi_resetn
-  ad_connect busy_capture/signal_out $hier_spi_engine/offload/trigger
+  ad_connect busy_sync/out_resetn $hier_spi_engine/${hier_spi_engine}_axi_regmap/spi_resetn
+  ad_connect busy_capture/signal_out $hier_spi_engine/${hier_spi_engine}_offload/trigger
 
   # interconnect
 
-  ad_cpu_interconnect  0x44A00000 $hier_spi_engine/axi_regmap
+  ad_cpu_interconnect  0x44A00000 $hier_spi_engine/${hier_spi_engine}_axi_regmap
 
   # interrupts
 
