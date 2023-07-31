@@ -229,7 +229,7 @@ using the following formula:
 
 .. math::
 
-   f_{sclk} = \frac{f_{clk}}{((div + 1) * 2)}.
+   f_{sclk} = \frac{f_{clk}}{((div + 1) * 2)}
 
 
 If no prescaler block is present div is 0.
