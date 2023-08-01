@@ -3,6 +3,7 @@ from docutils.statemachine import ViewList
 from docutils.parsers.rst import Directive, directives
 from sphinx.util.nodes import nested_parse_with_titles
 from sphinx.util import logging
+from ipyxact.ipyxact import Component
 import os.path
 
 logger = logging.getLogger(__name__)
@@ -21,9 +22,20 @@ class directive_parameters(Directive):
 
 	def warning(self, msg):
 		logger.warning(msg + f" Current file: {self.current_doc}")
+	def info(self, msg):
+		logger.info(msg + f" Current file: {self.current_doc}")
 
+	def recover_type(self, value):
+		# Hackish method, cannot obtain spirit:format with ipyxact
+		if value == 'true' or value == 'false':
+			return 'Bool'
+		try:
+			int(value)
+		except:
+			return 'String'
+		return 'Integer'
 
-	def table_parameters(self, path, content):
+	def table_parameters(self, path, content, include_all):
 		description = {}
 		tag = ''
 		for line in content:
@@ -38,14 +50,17 @@ class directive_parameters(Directive):
 		table = nodes.table()
 
 		parameters = {}
-		full_path = path+'/'+path[path.rfind('/')+1:]+'_hw.tcl'
-		if not os.path.isfile('../'+full_path):
-			self.warning(f"{full_path} does not exist!")
-			return table
-		with open('../'+full_path, 'r') as file:
+		ip_name = path[path.rfind('/')+1:]
+		file_1 = ip_name + '_hw.tcl'
+		if not os.path.isfile(f"../{path}/{file_1}"):
+			self.info(f"{file_1} does not exist, skipped.")
+		with open(f"../{path}/{file_1}", 'r') as file:
 			for line in file:
 				line = line.strip()
 				if line.startswith('ad_ip_parameter'):
+					# Requires parsing, skip
+					if line.find('$') != -1:
+						continue
 					line_ = line.split(' ', 4)
 					if len(line_) == 4:
 						line_.append('')
@@ -53,13 +68,31 @@ class directive_parameters(Directive):
 					comment = comment.replace('#','',1).strip()
 					if comment != '' and comment[-1] != '.':
 						comment += '.'
-					parameters[name] = {'type':type_, 'default':default, 'comment':comment}
+					parameters[name] = {'type': type_, 'default': default, 'comment': comment}
+
+		file_2 = 'component.xml'
+		if not os.path.isfile(f"../{path}/{file_2}"):
+			self.info(f"{file_2} from {ip_name} does not exist, skipped.")
+		else:
+			component = Component()
+			with open(f"../{path}/{file_2}", 'r') as file:
+				component.load(file)
+			for param in component.parameters.parameter:
+				if param.name == 'Component_Name':
+					continue
+				type_ = self.recover_type(param.value)
+				parameters[param.name] = {'type': type_, 'default': param.value, 'comment': ''}
 
 		for tag in description:
 			if tag not in parameters:
-				self.warning(f"{tag} does not exist in {full_path}!")
+				self.warning(f"{tag} does not exist in {file_1} or {file_2}!")
 			elif parameters[tag]['comment'] != '':
 				description[tag] = ' '.join([parameters[tag]['comment'], description[tag]])
+
+		if include_all is False:
+			for tag in list(parameters):
+				if tag not in description:
+					del parameters[tag]
 
 		tgroup = nodes.tgroup(cols=4)
 		for _ in range(4):
@@ -116,6 +149,9 @@ class directive_parameters(Directive):
 				break
 
 		end_index = path.rfind('.')
+		if (path.rfind('/index')) != -1:
+			end_index = path.rfind('/index')
+
 		return path[start_index:end_index]
 
 	def run(self):
@@ -135,9 +171,15 @@ class directive_parameters(Directive):
 				self.warning(f"Path {path} does not exist!")
 				return [ node ]
 
+		include_all = False
+		if 'adi_hdl_parser_include_all' not in env.config:
+			self.warning("adi_hdl_parser_include_all is not set!")
+		elif env.config.adi_hdl_parser_include_all is True:
+			include_all = True
+
 		node_table = nodes.section(ids=["hdl-parameters"])
 
-		node_table += self.table_parameters(path, self.content)
+		node_table += self.table_parameters(path, self.content, include_all)
 		node += node_table
 
 		return [ node ]
@@ -154,6 +196,8 @@ def setup(app):
 			html=(visit_node_parameters, depart_node_parameters),
 			latex=(visit_node_parameters, depart_node_parameters),
 			text=(visit_node_parameters, depart_node_parameters))
+
+	app.add_config_value('adi_hdl_parser_include_all', False, 'env')
 
 	return {
 		'version': '0.1',
