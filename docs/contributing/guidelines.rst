@@ -6,7 +6,7 @@ A brief set-of-rules for the documentation.
 .. note::
    The old wiki uses `dokuwiki <https://www.dokuwiki.org/dokuwiki>`_. When
    importing text from there, consider the automated options that are provided
-   in this page to convert it to :term:`reST`.
+   in this page to convert it to reST.
 
 Templates
 --------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ Notice how neither *library* nor *project* are present in the label, since there
 naming collision between libraries or projects (no project will ever be named
 *axi_dmac*).
 
-Also, for project, libraries and :term:`IP`\s, the names should be exactly the
+Also, for project, libraries and IPs, the names should be exactly the
 name of its folders, e.g. ``axi_pwm_gen`` and not ``axi-pwm-gen`` or ``AXI_PWM_GEN``,
 this helps avoid broken references.
 
@@ -120,7 +120,7 @@ Renders as
 Images
 --------------------------------------------------------------------------------
 
-Prefer the :term:`SVG` format for images, and save it as *Optimized SVG* in
+Prefer the SVG format for images, and save it as *Optimized SVG* in
 `inkscape <https://inkscape.org/>`_ to use less space.
 
 Vivado block-diagrams
