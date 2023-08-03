@@ -2,11 +2,33 @@
 ## Copyright (C) 2019-2023 Analog Devices, Inc. All rights reserved.
 ### SPDX short identifier: ADIBSD
 ###############################################################################
+##--------------------------------------------------------------
 
-# system level parameters
+# IMPORTANT: Set AD7616 operation and interface mode
+#
+# The get_env_param procedure retrieves parameter value from the environment if exists,
+# other case returns the default value specified in its second parameter field.
+#
+#   How to use over-writable parameters from the environment:
+#
+#    e.g.
+#      make SER_PAR_N=1
+#
+#    SER_PAR_N  - Defines the interface type (serial OR parallel)
+#               - Default value is 1
+#
+# LEGEND: Serial    - 1
+#         Parallel  - 0
+#
+# NOTE : This switch is a 'hardware' switch. Please reimplenent the
+# design if the variable has been changed.
+#     SL5 - mounted - Serial
+#     SL5 - unmounted - Parallel
+#
+##--------------------------------------------------------------
 
-set SI_OR_PI $ad_project_params(SI_OR_PI)
-puts "build parameters: SI_OR_PI: $SI_OR_PI"
+set SER_PAR_N $ad_project_params(SER_PAR_N)
+puts "build parameters: SER_PAR_N: $SER_PAR_N"
 
 # control lines
 
@@ -40,7 +62,7 @@ ad_connect sys_cpu_clk busy_sync/out_clk
 ad_connect busy_sync/in_bits rx_busy
 ad_connect busy_sync/out_bits busy_capture/signal_in
 
-if {$SI_OR_PI == 0} {
+if {$SER_PAR_N == 1} {
   create_bd_intf_port -mode Master -vlnv analog.com:interface:spi_master_rtl:1.0 ad7616_spi
 
   source $ad_hdl_dir/library/spi_engine/scripts/spi_engine.tcl
