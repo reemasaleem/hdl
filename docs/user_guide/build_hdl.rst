@@ -14,8 +14,8 @@ you must use basic diligence in resolving it yourself.
 Here we are giving you a quick rundown on how we build things. That is,
 the steps below are NOT a recommendation, but a suggestion. We use
 exclusively command line and mostly Linux systems. On Windows, we use
-Cygwin. Please do not ask any installation and/or setup instructions on
-these.
+Cygwin. Please **do not ask any installation and/or setup instructions on
+these.**
 
 Setup and check your environment
 -------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ Setup and check your environment
 This section contains a guide about how to setup your environment in
 order to build any HDL project from the repository.
 
-#. Install the required FPGA Design Suite. You can find information
+#. Install the required FPGA design suite. You can find information
    about the proper version in the `release
    notes <https://github.com/analogdevicesinc/hdl/releases>`__. Make
    sure that you're always using the latest release.
@@ -35,10 +35,10 @@ order to build any HDL project from the repository.
       *hdl/projects/scripts/adi_project_xilinx.tcl* for Vivado, and
       *hdl/projects/scripts/adi_project_intel.tcl* for Quartus.
 
-#. Download the tools from the following links (it will take a lot of
+#. Download the tools from the following links // (it will take a lot of
    time and space):
 
-   -  `Xilinx tools <xilinx>support/download.html>`__ (make sure you're
+   -  `Xilinx tools <https://www.xilinx.com/support/download.html>`__ (make sure you're
       downloading the proper installer! For full installation, it is
       better to choose the one that downloads and installs both Vivado
       and Vitis at the same time)
@@ -52,176 +52,193 @@ order to build any HDL project from the repository.
    `GNU Make <https://www.gnu.org/software/make/>`__ to build the
    projects. Depending on what OS you're using, you have these options:
 
-++++ For Windows environment with Cygwin \|
+.. dropdown::  For Windows environment with Cygwin
 
-Because GNU Make is not supported on Windows, you need to install
-`Cygwin <https://www.cygwin.com/>`__, which is a UNIX-like environment
-and command-line interface for Microsoft Windows. You do not need to
-install any special package, other than **git** and **make**.
+   Because GNU Make is not supported on Windows, you need to install
+   `Cygwin <https://www.cygwin.com/>`__, which is a UNIX-like environment
+   and command-line interface for Microsoft Windows. You do not need to
+   install any special package, other than **git** and **make**.
+   
+   After you installed Cygwin, you need to add your FPGA Design Tools
+   installation directory to your PATH environment variable. You can do
+   that by modifying your **~/.bashrc** file, by adding the following lines
+   **changed accordingly to your installation directories**. For example:
+ 
+   .. code-block:: 
+      :linenos: 
+   
+      export PATH=$PATH:/cygdrive/path_to/Xilinx/Vivado/202x.x/bin
+      export PATH=$PATH:/cygdrive/path_to/Xilinx/Vivado_HLS/202x.x/bin
+      export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/bin
+      export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/nt/bin
+      export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/arm/nt/bin
+      export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_be/bin
+      export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_le/bin
+      export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
+      export PATH=$PATH:/cygdrive/path_to/intelFPGA_pro/2x.x/quartus/bin
+   
+   .. _note:
 
-After you installed Cygwin, you need to add your FPGA Design Tools
-installation directory to your PATH environment variable. You can do
-that by modifying your **~/.bashrc** file, by adding the following lines
-**changed accordingly to your installation directories**. For example:
+      *Replace the **path_to** string with your path to the
+      installation folder and the **tools version** with the proper one!*
 
-::
 
-   export PATH=$PATH:/cygdrive/path_to/Xilinx/Vivado/202x.x/bin
-   export PATH=$PATH:/cygdrive/path_to/Xilinx/Vivado_HLS/202x.x/bin
-   export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/bin
-   export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/nt/bin
-   export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/arm/nt/bin
-   export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_be/bin
-   export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_le/bin
-   export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
-   export PATH=$PATH:/cygdrive/path_to/intelFPGA_pro/2x.x/quartus/bin
+.. dropdown:: For Windows environment with WSL
 
-<fc #fa8072>Replace the **path_to** string with your path to the
-installation folder and the **tools version** with the proper one!</fc>
+   You can also install
+   `WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__
+   (Windows Subsystem for Linux) which is both a UNIX-like environment and
+   a command-line interface for Microsoft Windows. In order to be able to
+   access the GUI, WSL2 is recommended. This can be done if we open
+   PowerShell or Windows Command Prompt in Administrator mode. In the link
+   above you can find the installation guide for wsl on windows. <note>
+   When installing wsl, the Ubuntu distribution will be installed by
+   default </note> If not, after installing wsl, write in the terminal:
 
-++++
+   .. code-block:: 
+      :linenos: 
 
-++++ For Windows environment with WSL \| You can also install
-`WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__
-(Windows Subsystem for Linux) which is both a UNIX-like environment and
-a command-line interface for Microsoft Windows. In order to be able to
-access the GUI, WSL2 is recommended. This can be done if we open
-PowerShell or Windows Command Prompt in Administrator mode. In the link
-above you can find the installation guide for wsl on windows. <note>
-When installing wsl, the Ubuntu distribution will be installed by
-default </note> If not, after installing wsl, write in the terminal:
+      >wsl --update
+      >wsl --install -d ubuntu
 
-::
+   If you want to check the version for wsl, you can use the Windows
+   Command Prompt command:
+   
+   .. code-block:: 
+      :linenos: 
 
-   >wsl --update
-   >wsl --install -d ubuntu
+      >wsl -l -v
+        NAME      STATE           VERSION
+      * Ubuntu    Running         2
+   
+   If you want to check the version for wsl and Ubuntu, you can use the
+   following commands in Ubuntu:
+   
+   .. code-block:: 
+      :linenos: 
+   
+      :~$ uname -r
+      5.15.90.1-microsoft-standard-WSL2
+   
+      :~$ lsb_release -a
+      No LSB modules are available.
+      Distributor ID: Ubuntu
+      Description:    Ubuntu 22.04.2 LTS
+      Release:        22.04
+      Codename:       jammy
+   
+   If you want to become root, you can use the following command:
+   
+   .. code-block:: 
+      :linenos: 
+   
+      :~$ sudo -i
+      [sudo] password for username:
+      root@HYB-0FPP35J6CsI:~# exit
+      logout
+   
+   Here the paths will look like this if the tools will be installed in the
+   Windows file system:
+   
+   .. code-block:: bash
+      :linenos:
 
-If you want to check the version for wsl, you can use the Windows
-Command Prompt command:
+      export PATH=$PATH:/mnt/path_to/Xilinx/Vivado/202x.x/bin
+      export PATH=$PATH:/mnt/path_to/Xilinx/Vivado_HLS/202x.x/bin
+      export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/bin
+      export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/nt/bin
+      export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/arm/nt/bin
+      export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_be/bin
+      export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_le/bin
+      export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
+      export PATH=$PATH:/mnt/path_to/intelFPGA_pro/2x.x/quartus/bin
+   
+   .. _note:
 
-::
+      Replace the **path_to** string with your path to the
+      installation folder and the **tools version** with the proper one!
+   
+   .. _warning: 
 
-   >wsl -l -v
-     NAME      STATE           VERSION
-   * Ubuntu    Running         2
+      Before building any project, it is necessary to install
+      the Linux version for Vivado (see `How to install Vivado on WSL
+      section`)
+      and Quartus because on the Ubuntu distribution on
+      `WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__ you
+      cannot run projects on the Windows version of them. When you have to
+      choose the installation path, choose the location where wsl is installed
+      (\\wsl.localhost\Ubuntu\opt). Also, to get the best performance, you
+      must clone your hdl repository in the WSL file system. For example:
+      (\\wsl.localhost\Ubuntu\home\username\hdl) </note> For more
+      information you can consult the following link:
+      `WSLStorage <https://learn.microsoft.com/en-us/windows/wsl/filesystems#file-storage-and-performance-across-file-systems>`__.
+   
+   Then the paths will look like this:
+   
+   .. code-block:: bash
+      :linenos: 
 
-If you want to check the version for wsl and Ubuntu, you can use the
-following commands in Ubuntu:
+      export PATH=$PATH:/opt/path_to/Xilinx/Vivado/202x.x/bin
+      export PATH=$PATH:/opt/path_to/Xilinx/Vivado_HLS/202x.x/bin
+      export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/bin
+      export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/nt/bin
+      export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/arm/nt/bin
+      export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_be/bin
+      export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_le/bin
+      export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
+      export PATH=$PATH:/opt/path_to/intelFPGA_pro/2x.x/quartus/bin
+   
+   .. _note:
 
-::
+      Replace the **path_to** string with your path to the
+      installation folder and the **tools version** with the proper one!
 
-   :~$ uname -r
-   5.15.90.1-microsoft-standard-WSL2
+.. dropdown:: For Linux environment
 
-   :~$ lsb_release -a
-   No LSB modules are available.
-   Distributor ID: Ubuntu
-   Description:    Ubuntu 22.04.2 LTS
-   Release:        22.04
-   Codename:       jammy
+   Because, in general, both **git** and **make** are native tools in Linux, 
+   you do not need to do any special setup. If you don't have these, install 
+   them.
 
-If you want to become root, you can use the following command:
+   Further more, you need to add your FPGA Design Tools installation
+   directory to your PATH environment variable. For Xilinx tools, you can
+   run the **settings64.sh** script, which is located in your installation
+   directory. Or you can add the required paths to your **~/.bashrc** file.
+   For example:
+   
+   .. code-block:: bash
+      :linenos:
+   
+      export PATH=$PATH:"/opt/Xilinx/Vivado/202x.x/bin"
+      export PATH=$PATH:"/opt/Xilinx/Vitis/202x.x/bin"
+      export PATH=$PATH:"/opt/intelFPGA_pro/2x.x/quartus/bin"
+   
+   Replace the **path_to** string with your path to the
+   installation folder and the **tools version** with the proper one!`
 
-::
+.. dropdown:: How to install Vivado on WSL 
+   
+   Installing the linux kit for Vivado can be done from Ubuntu:
 
-   :~$ sudo -i
-   [sudo] password for username:
-   root@HYB-0FPP35J6CsI:~# exit
-   logout
-
-Here the paths will look like this if the tools will be installed in the
-Windows file system:
-
-::
-
-   export PATH=$PATH:/mnt/path_to/Xilinx/Vivado/202x.x/bin
-   export PATH=$PATH:/mnt/path_to/Xilinx/Vivado_HLS/202x.x/bin
-   export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/bin
-   export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/nt/bin
-   export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/arm/nt/bin
-   export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_be/bin
-   export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_le/bin
-   export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
-   export PATH=$PATH:/mnt/path_to/intelFPGA_pro/2x.x/quartus/bin
-
-<fc #fa8072>Replace the **path_to** string with your path to the
-installation folder and the **tools version** with the proper one!</fc>
-
-<note important>Before building any project, it is necessary to install
-the Linux version for Vivado (see `How to install Vivado on wsl
-section </resources/fpga/docs/build#How to install Vivado on wsl section>`__
-) and Quartus because on the Ubuntu distribution on
-`WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__ you
-cannot run projects on the Windows version of them. When you have to
-choose the installation path, choose the location where wsl is installed
-(\\\\wsl.localhost\\Ubuntu\\opt). Also, to get the best performance, you
-must clone your hdl repository in the WSL file system. For example:
-(\\\\wsl.localhost\\Ubuntu\\home\\username\\hdl) </note> For more
-information you can consult the following link:
-`WSLStorage <https://learn.microsoft.com/en-us/windows/wsl/filesystems#file-storage-and-performance-across-file-systems>`__.
-
-Then the paths will look like this:
-
-::
-
-   export PATH=$PATH:/opt/path_to/Xilinx/Vivado/202x.x/bin
-   export PATH=$PATH:/opt/path_to/Xilinx/Vivado_HLS/202x.x/bin
-   export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/bin
-   export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/nt/bin
-   export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/arm/nt/bin
-   export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_be/bin
-   export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_le/bin
-   export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
-   export PATH=$PATH:/opt/path_to/intelFPGA_pro/2x.x/quartus/bin
-
-<fc #fa8072>Replace the **path_to** string with your path to the
-installation folder and the **tools version** with the proper one!</fc>
-
-++++
-
-++++ For Linux environment \| Because, in general, both **git** and
-**make** are native tools in Linux, you do not need to do any special
-setup. If you don't have these, install them.
-
-Further more, you need to add your FPGA Design Tools installation
-directory to your PATH environment variable. For Xilinx tools, you can
-run the **settings64.sh** script, which is located in your installation
-directory. Or you can add the required paths to your **~/.bashrc** file.
-For example:
-
-::
-
-   export PATH=$PATH:"/opt/Xilinx/Vivado/202x.x/bin"
-   export PATH=$PATH:"/opt/Xilinx/Vitis/202x.x/bin"
-   export PATH=$PATH:"/opt/intelFPGA_pro/2x.x/quartus/bin"
-
-<fc #fa8072>Replace the **path_to** string with your path to the
-installation folder and the **tools version** with the proper one!</fc>
-++++
-
-++++ How to install Vivado on WSL \| Installing the linux kit for Vivado
-can be done from Ubuntu:
-
-#. Go to the path where the installation kit for Vivado is located.
-#. Make it executable
-
-::
-
-   :~$ chmod +x Xilinx_Vivado installation kit.bin
-   :~$ ./Xilinx_Vivado installation kit.bin
-
-::
-
-   If you unzip the installation kit in Ubuntu, go to the Xilinx_Vivado installation kit and run .xsetup file. Make sure you have the following libraries installed:
-
-::
-
-   :~$ sudo apt-get install locales && sudo localedef -i en_US -f UTF-8 en_US.UTF-8
-   :~$ sudo ./installLibs.sh
-   :~$ sudo apt-get install libxrender1 libxtst6 libxi6
-
-You must create a .bashrc file with the paths corresponding to the
-version of Vivado installed. ++++
+   #. Go to the path where the installation kit for Vivado is located.
+   #. Make it executable
+   
+   ::
+   
+      :~$ chmod +x Xilinx_Vivado installation kit.bin
+      :~$ ./Xilinx_Vivado installation kit.bin
+   
+   ::
+   
+      If you unzip the installation kit in Ubuntu, go to the Xilinx_Vivado installation kit and run .xsetup file. Make sure you have the following libraries installed:
+   
+   ::
+   
+      :~$ sudo apt-get install locales && sudo localedef -i en_US -f UTF-8 en_US.UTF-8
+      :~$ sudo ./installLibs.sh
+      :~$ sudo apt-get install libxrender1 libxtst6 libxi6
+   
+   You must create a .bashrc file with the paths corresponding to the
+   version of Vivado installed. ++++
 
 ++++ How to verify your environment setup \| Run any of the following
 commands. These commands will return a valid path if your setup is good.
