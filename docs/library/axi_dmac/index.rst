@@ -129,83 +129,58 @@ Configuration Parameters
 Interface
 --------------------------------------------------------------------------------
 
-.. list-table::
-   :header-rows: 1
+.. hdl-interfaces::
 
-   * - Name
-     - Type
-     - Description
-   * - ``s_axi_aclk``
-     - Clock
+   * - s_axi_aclk
      - All ``s_axi`` signals and ``irq`` are synchronous to this clock.
-   * - ``s_axi_aresetn``
-     - Synchronous active low reset
+   * - s_axi_aresetn
      - Resets the internal state of the peripheral.
-   * - ``s_axi``
-     - AXI4-Lite bus slave
+   * - s_axi
      - Memory mapped AXI-lite bus that provides access to modules register map.
-   * - ``irq``
-     - Level-High Interrupt
+   * - irq
      - Interrupt output of the module. Is asserted when at least one of the
        modules interrupt is pending and enabled.
-   * - ``m_src_axi_aclk``
-     - Clock
-     - The ``m_src_axi`` interface is synchronous to this clock.
+   * - m_src_axi_aclk
+     - The m_src_axi interface is synchronous to this clock.
        Only present when ``DMA_TYPE_SRC`` parameter is set to AXI-MM (0).
-   * - ``m_src_axi_aresetn``
-     - Synchronous active low reset
+   * - m_src_axi_aresetn
      - Reset for the ``m_src_axi`` interface.
        Only present when ``DMA_TYPE_SRC`` parameter is set to AXI-MM (0).
-   * - ``m_src_axi``
-     - AXI3/AXI4 bus master
+   * - m_src_axi
      -
-   * - ``m_dest_axi_aclk``
-     - Clock
+   * - m_dest_axi_aclk
      - The ``m_src_axi`` interface is synchronous to this clock.
        Only present when ``DMA_TYPE_DEST`` parameter is set to AXI-MM (0).
-   * - ``m_dest_axi_aresetn``
-     - Synchronous active low reset
+   * - m_dest_axi_aresetn
      - Reset for the ``m_dest_axi`` interface.
        Only present when ``DMA_TYPE_DEST`` parameter is set to AXI-MM (0).
-   * - ``m_dest_axi``
-     - AXI3/AXI4 bus master
+   * - m_dest_axi
      -
-   * - ``s_axis_aclk``
-     - Clock
+   * - s_axis_aclk
      - The ``s_axis`` interface is synchronous to this clock.
        Only present when ``DMA_TYPE_SRC`` parameter is set to AXI-Streaming
        (1).
-   * - ``s_axis``
-     - AXI-streaming bus slave
-     -
-       Only present when ``DMA_TYPE_SRC`` parameter is set to AXI-Streaming
+   * - s_axis
+     - Only present when ``DMA_TYPE_SRC`` parameter is set to AXI-Streaming
        (1).
-   * - ``m_axis_aclk``
-     - Clock
+   * - m_axis_aclk
      - The ``m_axis`` interface is synchronous to this clock.
        Only present when ``DMA_TYPE_DEST`` parameter is set to AXI-Streaming
        (1).
-   * - ``m_axis``
-     - AXI-streaming bus master
+   * - m_axis
      - Only present when ``DMA_TYPE_DEST`` parameter is set to AXI-Streaming
        (1).
-   * - ``fifo_wr_clk``
-     - Clock
-     - The ``fifo_wr`` interface is synchronous to this clock.
+   * - fifo_wr_clk
+     - The fifo_wr interface is synchronous to this clock.
        Only present when ``DMA_TYPE_SRC`` parameter is set to FIFO (2).
-   * - ``fifo_wr``
-     - FIFO write interface
-     -
-       Only present when ``DMA_TYPE_SRC`` parameter is set to FIFO (2).
-   * - ``fifo_rd_clk``
-     - Clock
+   * - fifo_wr
+     - Only present when ``DMA_TYPE_SRC`` parameter is set to FIFO (2).
+   * - fifo_rd_clk
      - The ``fifo_rd`` interface is synchronous to this clock.
        Only present when ``DMA_TYPE_DEST`` parameter is set to FIFO (2).
-   * - ``fifo_rd``
-     - FIFO read interface
+   * - fifo_rd
      - Only present when ``DMA_TYPE_DEST`` parameter is set to FIFO (2).
-   * - ``dest_diag_level_bursts``
-     - Diagnostics interface
+   * - dest_diag_level_bursts
      - Only present when ``ENABLE_DIAGNOSTICS_IF`` parameter is set.
 
 Register Map

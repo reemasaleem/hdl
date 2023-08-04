@@ -31,8 +31,6 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # -- Custom extensions configuration -------------------------------------------
 
-adi_hdl_parser_include_all = False
-
 # -- todo configuration -------------------------------------------------------
 
 todo_include_todos = True
