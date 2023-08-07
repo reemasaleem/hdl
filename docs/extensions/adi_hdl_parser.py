@@ -243,8 +243,8 @@ class directive_regmap(directive_base):
 	def tables(self, obj):
 		node_tables = nodes.section()
 
-		section = nodes.section(ids=[f"register-map-{obj['title-tool']}"])
-		title = nodes.title(text=f"{obj['title']} ({obj['title-tool']})")
+		section = nodes.section(ids=[f"register-map-{obj['title']}"])
+		title = nodes.title(text=f"{obj['title']} ({obj['title']})")
 		section += title
 		node_tables += section
 		tgroup = nodes.tgroup(cols=7)
@@ -297,7 +297,7 @@ class directive_regmap(directive_base):
 		self.table_header(tgroup, ["Access Type", "Name", "Description"])
 
 		rows = []
-		for at in reg['access_type']:
+		for at in obj['access_type']:
 			self.column_entries(rows, [
 				[at, 'paragraph'],
 				[hdl_strings.access_type[at]['name'], 'paragraph'],
@@ -327,13 +327,21 @@ class directive_regmap(directive_base):
 			return [ node ]
 
 		subnode = nodes.section(ids=["hdl-regmap"])
-		if lib_name in env.regmaps:
-			if owner not in env.regmaps[lib_name]['owners']:
-				env.regmaps[lib_name]['owners'].append(owner)
-			subnode += self.tables(env.regmaps[lib_name])
-		else:
-			self.warning(f"regmap/adi_regmap{lib_name}.txt not-found, skipped!")
+
+		# Have to search all because it is allowed to have more than one regmap per file...
+		file = None
+		for f in env.regmaps:
+			if lib_name in env.regmaps[f]['subregmap']:
+				file = f
+				break
+
+		if file is None:
+			self.warning(f"Title tool {lib_name} not-found in any regmap file, skipped!")
 			return [ node ]
+
+		if owner not in env.regmaps[f]['owners']:
+			env.regmaps[f]['owners'].append(owner)
+		subnode += self.tables(env.regmaps[f]['subregmap'][lib_name])
 
 		node += subnode
 		return [ node ]
@@ -581,9 +589,7 @@ def manage_hdl_components(env, docnames, libraries):
 # From https://github.com/tfcollins/vger/blob/main/vger/hdl_reg_map.py
 def parse_hdl_regmap(reg, ctime):
 	regmap = {
-		'title': '',
-		'title_tool': '',
-		'regmap': [],
+		'subregmap': {},
 		'owners':[],
 		'ctime': ctime
 	}
@@ -592,101 +598,122 @@ def parse_hdl_regmap(reg, ctime):
 		data = f.readlines()
 	data = [d.replace("\n", "") for d in data]
 
-	# Get title
-	i = data.index("TITLE") + 1
-	regmap['title'] = data[i].strip()
-	regmap['title-tool'] = data[i + 1].strip()
-	data = data[i + 1 :]
+	while "TITLE" in data:
+		# Get title
+		tit = data.index("TITLE")
 
-	# Get registers
-	access_type = []
-	while "REG" in data:
-		rfi = data.index("ENDREG")
-		regi = data.index("REG")
-		reg_addr = data[regi + 1].strip()
-		reg_name = data[regi + 2].strip()
-		reg_desc = [data[fi].strip() for fi in range(regi + 3, rfi)]
-		reg_desc = " ".join(reg_desc)
+		title = str(data[tit + 1].strip())
+		title_tool = str(data[tit + 2].strip())
+		data = data[tit + 2 :]
 
-		data = data[regi + 1 :]
+		if 'ENDTITLE' in [title_tool, title]:
+			logger.warning(f"Malformed title fields at file regmap/adi_regmap_{reg}.txt, skipped!")
+			continue
 
-		# Get fields
-		fields = []
-		while "FIELD" in data:
-			fi = data.index("FIELD")
-			efi = data.index("ENDFIELD")
+		regmap['subregmap'][title_tool] = {
+			'title': title,
+			'regmap': [],
+			'access_type': []
+		}
 
-			if not fi:
+		# Get registers
+		access_type = []
+		while "REG" in data:
+			regi = data.index("REG")
+			rfi = data.index("ENDREG")
+
+			if not regi:
 				break
 
+			reg_addr = data[regi + 1].strip()
+			reg_name = data[regi + 2].strip()
+			reg_desc = [data[fi].strip() for fi in range(regi + 3, rfi)]
+			reg_desc = " ".join(reg_desc)
+
 			with contextlib.suppress(ValueError):
-				if rege := data.index("REG"):
-					if fi > rege:
-						# into next register
+				if tet := data.index("TITLE"):
+					if regi > tet:
+						# into next regmap
 						break
+			data = data[regi + 1 :]
 
-			field_loc = data[fi + 1].strip()
-			field_loc = field_loc.split(" ")
-			field_bits = field_loc[0].replace("[", "").replace("]", "")
-			field_default = field_loc[1] if len(field_loc) > 1 else "NA"
+			# Get fields
+			fields = []
+			while "FIELD" in data:
+				fi = data.index("FIELD")
+				efi = data.index("ENDFIELD")
 
-			field_name = data[fi + 2].strip()
-			field_rw = data[fi + 3].strip()
+				if not fi:
+					break
 
-			if field_rw == 'R':
-				field_rw = 'RO'
-			elif field_rw == 'W':
-				field_rw = 'WO'
-			if '-V' in field_rw:
-				if 'V' not in access_type:
-					access_type.append('V')
-			field_rw_ = field_rw.replace('-V','')
-			if field_rw_ not in access_type:
-				if field_rw_ not in hdl_strings.access_type:
-					logger.warning(f"Malformed access type {field_rw} for register {field_name}, file regmap/adi_regmap_{reg}.txt.")
+				with contextlib.suppress(ValueError):
+					if rege := data.index("REG"):
+						if fi > rege:
+							# into next register
+							break
+
+				field_loc = data[fi + 1].strip()
+				field_loc = field_loc.split(" ")
+				field_bits = field_loc[0].replace("[", "").replace("]", "")
+				field_default = field_loc[1] if len(field_loc) > 1 else "NA"
+
+				field_name = data[fi + 2].strip()
+				field_rw = data[fi + 3].strip()
+
+				if field_rw == 'R':
+					field_rw = 'RO'
+				elif field_rw == 'W':
+					field_rw = 'WO'
+				if '-V' in field_rw:
+					if 'V' not in access_type:
+						access_type.append('V')
+				field_rw_ = field_rw.replace('-V','')
+				if field_rw_ not in access_type:
+					if field_rw_ not in hdl_strings.access_type:
+						logger.warning(f"Malformed access type {field_rw} for register {field_name}, file regmap/adi_regmap_{reg}.txt.")
+					else:
+						access_type.append(field_rw)
+
+				field_desc = [data[fi].strip() for fi in range(fi + 4, efi)]
+				field_desc = " ".join(field_desc)
+
+				fields.append(
+					{
+						"name": field_name,
+						"bits": field_bits,
+						"default": field_default,
+						"rw": field_rw,
+						"description": field_desc,
+					}
+				)
+
+				data = data[fi + 1 :]
+
+			try:
+				if '+' in reg_addr:
+					reg_addr_ = reg_addr.split('+')
+					reg_addr_[0] = int(reg_addr_[0], 16)
+					reg_addr_[1] = int(reg_addr_[1].replace('*n',''), 16)
+					reg_addr_dword = f"{hex(reg_addr_[0])} + {hex(reg_addr_[1])}*n"
+					reg_addr_byte = f"{hex(reg_addr_[0]<<2)} + {hex(reg_addr_[1]<<2)}*n"
 				else:
-					access_type.append(field_rw)
+					reg_addr_ = int(reg_addr, 16)
+					reg_addr_dword = f"{hex(reg_addr_)}"
+					reg_addr_byte = f"{hex(reg_addr_<<2)}"
+			except:
+				logger.warning(f"Got malformed register address {reg_addr} for register {reg_name}, file regmap/adi_regmap_{reg}.txt.")
+				reg_addr_dword = ""
+				reg_addr_byte = ""
 
-			field_desc = [data[fi].strip() for fi in range(fi + 4, efi)]
-			field_desc = " ".join(field_desc)
-
-			fields.append(
+			regmap['subregmap'][title_tool]['regmap'].append(
 				{
-					"name": field_name,
-					"bits": field_bits,
-					"default": field_default,
-					"rw": field_rw,
-					"description": field_desc,
+					'name': reg_name,
+					'address': [reg_addr_dword,	reg_addr_byte],
+					'description': reg_desc,
+					'fields': fields
 				}
 			)
-
-			data = data[fi + 1 :]
-
-		try:
-			if '+' in reg_addr:
-				reg_addr_ = reg_addr.split('+')
-				reg_addr_[0] = int(reg_addr_[0], 16)
-				reg_addr_[1] = int(reg_addr_[1].replace('*n',''), 16)
-				reg_addr_dword = f"{hex(reg_addr_[0])} + {hex(reg_addr_[1])}*n"
-				reg_addr_byte = f"{hex(reg_addr_[0]<<2)} + {hex(reg_addr_[1]<<2)}*n"
-			else:
-				reg_addr_ = int(reg_addr, 16)
-				reg_addr_dword = f"{hex(reg_addr_)}"
-				reg_addr_byte = f"{hex(reg_addr_<<2)}"
-		except:
-			logger.warning(f"Got malformed register address {reg_addr} for register {reg_name}, file regmap/adi_regmap_{reg}.txt.")
-			reg_addr_dword = ""
-			reg_addr_byte = ""
-
-		regmap['regmap'].append(
-			{
-				'name': reg_name,
-				'address': [reg_addr_dword,	reg_addr_byte],
-				'description': reg_desc,
-				'fields': fields,
-				'access_type': access_type
-			}
-		)
+		regmap['subregmap'][title_tool]['access_type'] = access_type
 	return regmap
 
 def manage_hdl_regmaps(env, docnames):

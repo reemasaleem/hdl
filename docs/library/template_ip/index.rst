@@ -110,20 +110,17 @@ basic monitoring and control of the ADC's channel.
 Register Map
 --------------------------------------------------------------------------------
 
-.. csv-table:: Base (common to all cores)
-   :file: ../common/regmap_base.csv
-   :class: regmap
-   :header-rows: 2
+.. hdl-regmap::
+   :name: COMMON
+   :no-type-info:
 
-.. csv-table:: ADC Common (axi_ad*)
-   :file: ../common/regmap_adc_common.csv
-   :class: regmap
-   :header-rows: 2
+.. hdl-regmap::
+   :name: ADC_COMMON
+   :no-type-info:
 
-.. csv-table:: ADC Channel (axi_ad*)
-   :file: ../common/regmap_adc_channel.csv
-   :class: regmap
-   :header-rows: 2
+.. hdl-regmap::
+   :name: ADC_CHANNEL
+   :no-type-info:
 
 Design Guidelines
 --------------------------------------------------------------------------------

@@ -15,6 +15,7 @@ Templates are available:
 
 * :git-hdl:`docs/library/template_ip` (:ref:`rendered <template_ip>`).
 * :git-hdl:`docs/library/template_framework` (:ref:`rendered <template_framework>`).
+* :git-hdl:`docs/projects/template` (:ref:`rendered <template_project>`).
 
 Remove the ``:orphan:`` in the first line, it is to hide the templates from the
 `TOC tree <https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree>`_.
@@ -342,17 +343,19 @@ For example:
 .. code:: rst
 
    .. hdl-regmap::
-      :name: dmac
+      :name: DMAC
 
 .. note::
 
-   Do not include the preffix ``adi_regmap_`` and suffix ``.txt`` in the name.
+  The register map name is the title-tool, the value above ``ENDTITLE`` in the
+  source file.
 
 This directive does not support content for descriptions, since the source file
 already have proper descriptions.
 
-The ``:name:`` option is **required**, because the register map name does not match
-the IP name in most cases.
+The ``:name:`` option is **required**, because the title tool does not match
+the IP name and one single *docs/regmap/adi_regmap_\*.txt* file can have more than
+one register map.
 The ``:no-type-info:`` option is optional, and should **not** be included if it is
 in the main IP documentation page. It appends an auxiliary table explaining the
 register access types.
