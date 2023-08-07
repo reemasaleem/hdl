@@ -5,6 +5,8 @@ from docutils.parsers.rst import Directive, directives
 from sphinx.util.nodes import nested_parse_with_titles
 from sphinx.util import logging
 from lxml import etree
+from adi_hdl_static import hdl_strings
+import contextlib
 
 logger = logging.getLogger(__name__)
 
@@ -22,8 +24,17 @@ def pretty_dep(string):
 		return ''
 	return string.replace("'MODELPARAM_VALUE.",'').replace("'",'')
 
+def sanitized_bool(string):
+	string_ = string.strip().lower()
+	if string_ in ['1', 'true', 'yes', 'y']:
+		return True
+	elif string_ in ['0', 'false', 'no', 'n']:
+		return False
+	else:
+		logger.warning(f"Got malformed bool value {string}.")
+		return False
+
 class directive_base(Directive):
-	option_spec = {'path': directives.unchanged}
 	has_content = True
 	add_index = True
 	current_doc = ''
@@ -46,6 +57,32 @@ class directive_base(Directive):
 		for key in items:
 			items[key] = ' '.join(items[key]).strip().replace('- ', '', 1)
 		return items
+
+	def column_entry(self, row, text, node_type, classes=[]):
+		entry = nodes.entry(classes=classes)
+		if node_type == 'literal':
+			entry += nodes.literal(text=text)
+		elif node_type == 'paragraph':
+			entry += nodes.paragraph(text=text)
+		elif node_type == 'reST':
+			rst = ViewList()
+			rst.append(text, "virtual_"+self.current_doc, 0)
+			node = nodes.section()
+			node.document = self.state.document
+			nested_parse_with_titles(self.state, rst, node)
+			entry += node
+		else:
+			return
+		row += entry
+
+	def column_entries(self, rows, items):
+		row = nodes.row()
+		for item in items:
+			if len(item) == 3:
+				self.column_entry(row, item[0], item[1], classes=item[2])
+			else:
+				self.column_entry(row, item[0], item[1])
+		rows.append(row)
 
 	def generic_table(self, description):
 		tgroup = nodes.tgroup(cols=2)
@@ -92,6 +129,7 @@ class directive_base(Directive):
 		thead.append(row)
 
 class directive_interfaces(directive_base):
+	option_spec = {'path': directives.unchanged}
 	required_arguments = 0
 	optional_arguments = 0
 
@@ -105,7 +143,7 @@ class directive_interfaces(directive_base):
 
 		bs = component['bus_interface']
 		for tag in bs:
-			section = nodes.section(ids=[f"virtual_{self.current_doc}_bus_interface_{tag}"])
+			section = nodes.section(ids=[f"bus-interface-{tag}"])
 			title = nodes.title(text=tag)
 			section += title
 			if bs[tag]['dependency'] is not None:
@@ -118,13 +156,13 @@ class directive_interfaces(directive_base):
 				node.document = self.state.document
 				nested_parse_with_titles(self.state, rst, node)
 				section += node
+			node_tables += section
 
 			tgroup = nodes.tgroup(cols=3)
 			for _ in range(3):
 				colspec = nodes.colspec(colwidth=1)
 				tgroup.append(colspec)
 			table = nodes.table()
-			table += section
 			table += tgroup
 
 			self.table_header(tgroup, ["Physical Port", "Logical Port", "Direction"])
@@ -132,60 +170,41 @@ class directive_interfaces(directive_base):
 			rows = []
 			pm = bs[tag]['port_map']
 			for key in pm:
-				row = nodes.row()
-				entry = nodes.entry()
-				entry += nodes.literal(text=key)
-				row += entry
-				entry = nodes.entry()
-				entry += nodes.literal(text=pm[key]['logical_port'])
-				row += entry
-				entry = nodes.entry()
-				entry += nodes.paragraph(text=pm[key]['direction'])
-				row += entry
-				rows.append(row)
+				self.column_entries(rows, [
+					[key, 'literal'],
+					[pm[key]['logical_port'], 'literal'],
+					[pm[key]['direction'], 'paragraph'],
+				])
 
 			tbody = nodes.tbody()
 			tbody.extend(rows)
 			tgroup += tbody
 			node_tables += table
 
-		section = nodes.section(ids=[f"virtual_{self.current_doc}_ports"])
+		section = nodes.section(ids=[f"ports"])
 		title = nodes.title(text="Ports")
 		section += title
+		node_tables += section
 		tgroup = nodes.tgroup(cols=4)
 		for _ in range(4):
 			colspec = nodes.colspec(colwidth=1)
 			tgroup.append(colspec)
 		table = nodes.table()
-		table += section
 		table += tgroup
 
-		self.table_header(tgroup, ["Physical Port", "Description", "Direction", "Dependency"])
+		self.table_header(tgroup, ["Physical Port", "Direction", "Dependency", "Description"])
 
 		rows = []
 		pr = component['ports']
 		for key in pr:
 			row = nodes.row()
-			entry = nodes.entry()
-			entry += nodes.literal(text=key)
-			row += entry
-			entry = nodes.entry()
+			self.column_entry(row, key, 'literal')
+			self.column_entry(row, pr[key]['direction'], 'paragraph')
+			self.column_entry(row, pretty_dep(pr[key]['dependency']), 'paragraph')
 			if key in description:
-				rst = ViewList()
-				rst.append(description[key], "virtual_"+self.current_doc, 0)
-				node = nodes.section()
-				node.document = self.state.document
-				nested_parse_with_titles(self.state, rst, node)
-				entry += node
+				self.column_entry(row, description[key], 'reST', classes=['description'])
 			else:
-				entry += nodes.paragraph(text='')
-			row += entry
-			entry = nodes.entry()
-			entry += nodes.paragraph(text=pr[key]['direction'])
-			row += entry
-			entry = nodes.entry()
-			entry += nodes.paragraph(text=pretty_dep(pr[key]['dependency']))
-			row += entry
+				self.column_entry(row, '', 'paragraph')
 			rows.append(row)
 
 		tbody = nodes.tbody()
@@ -216,7 +235,111 @@ class directive_interfaces(directive_base):
 
 		return [ node ]
 
+class directive_regmap(directive_base):
+	option_spec = {'name': directives.unchanged, 'no-type-info': directives.unchanged}
+	required_arguments = 0
+	optional_arguments = 0
+
+	def tables(self, obj):
+		node_tables = nodes.section()
+
+		section = nodes.section(ids=[f"register-map-{obj['title-tool']}"])
+		title = nodes.title(text=f"{obj['title']} ({obj['title-tool']})")
+		section += title
+		node_tables += section
+		tgroup = nodes.tgroup(cols=7)
+		for _ in range(7):
+			colspec = nodes.colspec(colwidth=1)
+			tgroup.append(colspec)
+		table = nodes.table(classes=['regmap'])
+		table += tgroup
+
+		self.table_header(tgroup, ["DWORD", "BYTE", "BITS", "Name", "Type", "Default", "Description"])
+
+		rows = []
+		for reg in obj['regmap']:
+			self.column_entries(rows, [
+				[reg['address'][0], 'literal'],
+				[reg['address'][1], 'literal'],
+				['', 'literal'],
+				[reg['name'], 'literal'],
+				['', 'literal'],
+				['', 'literal'],
+				[reg['description'], 'reST', ['description']],
+			])
+
+			for field in reg['fields']:
+				self.column_entries(rows, [
+					['', 'literal'],
+					['', 'literal'],
+					[f"[{field['bits']}]", 'literal'],
+					[field['name'], 'literal'],
+					[field['rw'], 'paragraph'],
+					[field['default'], 'paragraph'],
+					[field['description'], 'reST', ['description']],
+				])
+
+		tbody = nodes.tbody()
+		tbody.extend(rows)
+		tgroup += tbody
+		node_tables += table
+
+		if 'no-type-info' in self.options:
+			return node_tables
+
+		tgroup = nodes.tgroup(cols=3)
+		for _ in range(3):
+			colspec = nodes.colspec(colwidth=1)
+			tgroup.append(colspec)
+		table = nodes.table()
+		table += tgroup
+
+		self.table_header(tgroup, ["Access Type", "Name", "Description"])
+
+		rows = []
+		for at in reg['access_type']:
+			self.column_entries(rows, [
+				[at, 'paragraph'],
+				[hdl_strings.access_type[at]['name'], 'paragraph'],
+				[hdl_strings.access_type[at]['description'], 'paragraph']
+			])
+
+		tbody = nodes.tbody()
+		tbody.extend(rows)
+		tgroup += tbody
+		node_tables	+= table
+
+		return node_tables
+
+	def run(self):
+		env = self.state.document.settings.env
+		self.current_doc = env.doc2path(env.docname)
+		if os.getcwd() not in self.current_doc:
+			raise Exception(f"Inconsistent paths, {os.getcwd()} not in {self.current_doc}")
+		owner = self.current_doc[len(os.getcwd())+1:-4]
+
+		node = node_parameters()
+
+		if 'name' in self.options:
+			lib_name = self.options['name']
+		else:
+			self.warning("hdl-regmap directive without name option, skipped!")
+			return [ node ]
+
+		subnode = nodes.section(ids=["hdl-regmap"])
+		if lib_name in env.regmaps:
+			if owner not in env.regmaps[lib_name]['owners']:
+				env.regmaps[lib_name]['owners'].append(owner)
+			subnode += self.tables(env.regmaps[lib_name])
+		else:
+			self.warning(f"regmap/adi_regmap{lib_name}.txt not-found, skipped!")
+			return [ node ]
+
+		node += subnode
+		return [ node ]
+
 class directive_parameters(directive_base):
+	option_spec = {'path': directives.unchanged}
 	required_arguments = 0
 	optional_arguments = 0
 
@@ -238,33 +361,20 @@ class directive_parameters(directive_base):
 		rows = []
 		for key in parameter:
 			row = nodes.row()
-			entry = nodes.entry()
-			entry += nodes.literal(text="{:s}".format(key))
-			row += entry
-			entry = nodes.entry()
+			self.column_entry(row, "{:s}".format(key), 'literal')
 			if key in description:
-				rst = ViewList()
-				rst.append(description[key], "virtual_"+self.current_doc, 0)
-				node = nodes.section()
-				node.document = self.state.document
-				nested_parse_with_titles(self.state, rst, node)
-				entry += node
+				self.column_entry(row, description[key], 'reST', classes=['description'])
 			else:
-				entry += nodes.paragraph(text=dot_fix(parameter[key]['description']))
-			row += entry
+				self.column_entry(row, dot_fix(parameter[key]['description']), 'paragraph', classes=['description'])
 			for tag in ['type', 'default']:
-				entry = nodes.entry()
-				entry += nodes.paragraph(text=parameter[key][tag].title())
-				row += entry
+				self.column_entry(row, parameter[key][tag].title(), 'paragraph')
 			crange = []
 			if parameter[key]['choices'] is not None:
 				crange.append(parameter[key]['choices'])
 			if parameter[key]['range'] is not None:
 				crange.append(parameter[key]['range'])
 			crange = '. '.join(crange)
-			entry = nodes.entry()
-			entry += nodes.paragraph(text=crange)
-			row += entry
+			self.column_entry(row, crange, 'paragraph')
 
 			rows.append(row)
 
@@ -393,7 +503,7 @@ def parse_hdl_component(path, ctime):
 		for port_map in get_all(bus_interface, 'portMaps/portMap'):
 			pm[get(port_map, 'physicalPort/name').text] = {
 				'logical_port': get(port_map, 'logicalPort/name').text,
-				'direction': None
+				'direction': ''
 			}
 
 	lport = component['ports']
@@ -448,9 +558,7 @@ def parse_hdl_component(path, ctime):
 
 	return component
 
-def manage_hdl_components(app, env, docnames):
-	libraries =  [[k.replace('/index',''), k] for k in env.found_docs if k.find('library/') == 0]
-
+def manage_hdl_components(env, docnames, libraries):
 	if not hasattr(env, 'component'):
 		env.component = {}
 	cp = env.component
@@ -470,15 +578,160 @@ def manage_hdl_components(app, env, docnames):
 			cp[lib] = parse_hdl_component(f, ctime)
 			docnames.append(doc)
 
+# From https://github.com/tfcollins/vger/blob/main/vger/hdl_reg_map.py
+def parse_hdl_regmap(reg, ctime):
+	regmap = {
+		'title': '',
+		'title_tool': '',
+		'regmap': [],
+		'owners':[],
+		'ctime': ctime
+	}
+
+	with open(f"regmap/adi_regmap_{reg}.txt", "r") as f:
+		data = f.readlines()
+	data = [d.replace("\n", "") for d in data]
+
+	# Get title
+	i = data.index("TITLE") + 1
+	regmap['title'] = data[i].strip()
+	regmap['title-tool'] = data[i + 1].strip()
+	data = data[i + 1 :]
+
+	# Get registers
+	access_type = []
+	while "REG" in data:
+		rfi = data.index("ENDREG")
+		regi = data.index("REG")
+		reg_addr = data[regi + 1].strip()
+		reg_name = data[regi + 2].strip()
+		reg_desc = [data[fi].strip() for fi in range(regi + 3, rfi)]
+		reg_desc = " ".join(reg_desc)
+
+		data = data[regi + 1 :]
+
+		# Get fields
+		fields = []
+		while "FIELD" in data:
+			fi = data.index("FIELD")
+			efi = data.index("ENDFIELD")
+
+			if not fi:
+				break
+
+			with contextlib.suppress(ValueError):
+				if rege := data.index("REG"):
+					if fi > rege:
+						# into next register
+						break
+
+			field_loc = data[fi + 1].strip()
+			field_loc = field_loc.split(" ")
+			field_bits = field_loc[0].replace("[", "").replace("]", "")
+			field_default = field_loc[1] if len(field_loc) > 1 else "NA"
+
+			field_name = data[fi + 2].strip()
+			field_rw = data[fi + 3].strip()
+
+			if field_rw == 'R':
+				field_rw = 'RO'
+			elif field_rw == 'W':
+				field_rw = 'WO'
+			if '-V' in field_rw:
+				if 'V' not in access_type:
+					access_type.append('V')
+			field_rw_ = field_rw.replace('-V','')
+			if field_rw_ not in access_type:
+				if field_rw_ not in hdl_strings.access_type:
+					logger.warning(f"Malformed access type {field_rw} for register {field_name}, file regmap/adi_regmap_{reg}.txt.")
+				else:
+					access_type.append(field_rw)
+
+			field_desc = [data[fi].strip() for fi in range(fi + 4, efi)]
+			field_desc = " ".join(field_desc)
+
+			fields.append(
+				{
+					"name": field_name,
+					"bits": field_bits,
+					"default": field_default,
+					"rw": field_rw,
+					"description": field_desc,
+				}
+			)
+
+			data = data[fi + 1 :]
+
+		try:
+			if '+' in reg_addr:
+				reg_addr_ = reg_addr.split('+')
+				reg_addr_[0] = int(reg_addr_[0], 16)
+				reg_addr_[1] = int(reg_addr_[1].replace('*n',''), 16)
+				reg_addr_dword = f"{hex(reg_addr_[0])} + {hex(reg_addr_[1])}*n"
+				reg_addr_byte = f"{hex(reg_addr_[0]<<2)} + {hex(reg_addr_[1]<<2)}*n"
+			else:
+				reg_addr_ = int(reg_addr, 16)
+				reg_addr_dword = f"{hex(reg_addr_)}"
+				reg_addr_byte = f"{hex(reg_addr_<<2)}"
+		except:
+			logger.warning(f"Got malformed register address {reg_addr} for register {reg_name}, file regmap/adi_regmap_{reg}.txt.")
+			reg_addr_dword = ""
+			reg_addr_byte = ""
+
+		regmap['regmap'].append(
+			{
+				'name': reg_name,
+				'address': [reg_addr_dword,	reg_addr_byte],
+				'description': reg_desc,
+				'fields': fields,
+				'access_type': access_type
+			}
+		)
+	return regmap
+
+def manage_hdl_regmaps(env, docnames):
+	if not hasattr(env, 'regmaps'):
+		env.regmaps = {}
+
+	rm = env.regmaps
+	for lib in list(rm):
+		f = f"regmap/adi_regmap_{lib}.txt"
+		if not os.path.isfile(f):
+			del rm[lib]
+	# Inconsistent naming convention, need to parse all in directory.
+	files = []
+	for (dirpath, dirnames, filenames) in os.walk("regmap"):
+		files.extend(filenames)
+		break
+	regmaps = [f.replace('adi_regmap_','').replace('.txt','') for f in files]
+	for reg_name in regmaps:
+		ctime = os.path.getctime(f"regmap/adi_regmap_{reg_name}.txt")
+		if reg_name in rm and rm[reg_name]['ctime'] < ctime:
+			for o in rm[reg_name]['owners']:
+				if o not in docnames:
+					docnames.append(o)
+		if reg_name in rm and rm[reg_name]['ctime'] >= ctime:
+			pass
+		else:
+			rm[reg_name] = parse_hdl_regmap(reg_name, ctime)
+
+def manage_hdl_artifacts(app, env, docnames):
+	libraries =  [[k.replace('/index',''), k] for k in env.found_docs if k.find('library/') == 0]
+
+	manage_hdl_components(env, docnames, libraries)
+	manage_hdl_regmaps(env, docnames)
+
 def setup(app):
 	app.add_directive('hdl-parameters', directive_parameters)
 	app.add_directive('hdl-interfaces', directive_interfaces)
+	app.add_directive('hdl-regmap', directive_regmap)
+
 	app.add_node(node_parameters,
 			html=(visit_node_parameters, depart_node_parameters),
 			latex=(visit_node_parameters, depart_node_parameters),
 			text=(visit_node_parameters, depart_node_parameters))
 
-	app.connect('env-before-read-docs', manage_hdl_components)
+	app.connect('env-before-read-docs', manage_hdl_artifacts)
 
 	return {
 		'version': '0.1',

@@ -282,7 +282,7 @@ Renders as:
    * - NUM_OF_SDI
      - Number of SDI lines on the physical SPI interface.
 
-Descriptions in the directive have higher precedece tha in the *component.xml*
+Descriptions in the directive have higher precedence than in the *component.xml*
 file.
 
 The ``:path:`` option is optional, and should **not** be included if the
@@ -316,21 +316,46 @@ For example:
    .. hdl-interfaces::
       :path: library/spi_engine/spi_engine_interconnect
 
-
-Renders as:
-
-::
-
-   .. hdl-interfaces::
-      :path: library/spi_engine/spi_engine_interconnect
-
-
-Descriptions in the directive have higher precedece than in the *component.xml*
+Descriptions in the directive have higher precedence than in the *component.xml*
 file.
 You can provide description to a port or a bus, but not for a bus port.
 
 The ``:path:`` option is optional, and should **not** be included if the
 documentation file path matches the *component.xml* hierarchically.
+
+HDL regmap directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The HDL regmap directive gets information from *docs/regmap/adi_regmap_\*.txt* files
+and generates tables with the register maps.
+
+The directive syntax is:
+
+.. code:: rst
+
+   .. hdl-regmap::
+      :name: <regmap_name>
+      :no-type-info:
+
+For example:
+
+.. code:: rst
+
+   .. hdl-regmap::
+      :name: dmac
+
+.. note::
+
+   Do not include the preffix ``adi_regmap_`` and suffix ``.txt`` in the name.
+
+This directive does not support content for descriptions, since the source file
+already have proper descriptions.
+
+The ``:name:`` option is **required**, because the register map name does not match
+the IP name in most cases.
+The ``:no-type-info:`` option is optional, and should **not** be included if it is
+in the main IP documentation page. It appends an auxiliary table explaining the
+register access types.
 
 .. _installing_pandoc:
 
