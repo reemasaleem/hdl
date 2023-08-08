@@ -64,7 +64,7 @@ order to build any HDL project from the repository.
    that by modifying your **~/.bashrc** file, by adding the following lines
    **changed accordingly to your installation directories**. For example:
  
-   .. code-block:: 
+   .. code-block:: bash
       :linenos: 
    
       export PATH=$PATH:/cygdrive/path_to/Xilinx/Vivado/202x.x/bin
@@ -77,10 +77,11 @@ order to build any HDL project from the repository.
       export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/cygdrive/path_to/intelFPGA_pro/2x.x/quartus/bin
    
-   .. _note:
+   .. _note::
+      :name: note_windows_cygwin
 
-      *Replace the **path_to** string with your path to the
-      installation folder and the **tools version** with the proper one!*
+      Replace the **path_to** string with your path to the
+      installation folder and the **tools version** with the proper one!
 
 
 .. dropdown:: For Windows environment with WSL
@@ -91,9 +92,15 @@ order to build any HDL project from the repository.
    a command-line interface for Microsoft Windows. In order to be able to
    access the GUI, WSL2 is recommended. This can be done if we open
    PowerShell or Windows Command Prompt in Administrator mode. In the link
-   above you can find the installation guide for wsl on windows. <note>
-   When installing wsl, the Ubuntu distribution will be installed by
-   default </note> If not, after installing wsl, write in the terminal:
+   above you can find the installation guide for wsl on windows. 
+
+   .. _note::
+      :name: note_windows_wsl1
+
+      When installing wsl, the Ubuntu distribution will be installed by
+      default
+      
+   If not, after installing wsl, write in the terminal:
 
    .. code-block:: 
       :linenos: 
@@ -114,7 +121,7 @@ order to build any HDL project from the repository.
    If you want to check the version for wsl and Ubuntu, you can use the
    following commands in Ubuntu:
    
-   .. code-block:: 
+   .. code-block::
       :linenos: 
    
       :~$ uname -r
@@ -129,12 +136,12 @@ order to build any HDL project from the repository.
    
    If you want to become root, you can use the following command:
    
-   .. code-block:: 
+   .. code-block:: bash
       :linenos: 
    
       :~$ sudo -i
       [sudo] password for username:
-      root@HYB-0FPP35J6CsI:~# exit
+      root@pc_name:~# exit
       logout
    
    Here the paths will look like this if the tools will be installed in the
@@ -153,12 +160,14 @@ order to build any HDL project from the repository.
       export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/mnt/path_to/intelFPGA_pro/2x.x/quartus/bin
    
-   .. _note:
+   .. _note::
+      :name: note_windows_wsl2
 
       Replace the **path_to** string with your path to the
       installation folder and the **tools version** with the proper one!
    
-   .. _warning: 
+   .. _warning::
+      :name: war_windows_wsl
 
       Before building any project, it is necessary to install
       the Linux version for Vivado (see `How to install Vivado on WSL
@@ -167,11 +176,12 @@ order to build any HDL project from the repository.
       `WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__ you
       cannot run projects on the Windows version of them. When you have to
       choose the installation path, choose the location where wsl is installed
-      (\\wsl.localhost\Ubuntu\opt). Also, to get the best performance, you
+      (:code:`\\\\wsl.localhost\\Ubuntu\\opt`). Also, to get the best performance, you
       must clone your hdl repository in the WSL file system. For example:
-      (\\wsl.localhost\Ubuntu\home\username\hdl) </note> For more
-      information you can consult the following link:
-      `WSLStorage <https://learn.microsoft.com/en-us/windows/wsl/filesystems#file-storage-and-performance-across-file-systems>`__.
+      :code:`\\\\wsl.localhost\\Ubuntu\\home\\username\\hdl`
+
+   For more information you can consult the following link:
+   `WSLStorage <https://learn.microsoft.com/en-us/windows/wsl/filesystems#file-storage-and-performance-across-file-systems>`__.
    
    Then the paths will look like this:
    
@@ -188,7 +198,8 @@ order to build any HDL project from the repository.
       export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/opt/path_to/intelFPGA_pro/2x.x/quartus/bin
    
-   .. _note:
+   .. _note::
+      :name: note_windows_wsl3
 
       Replace the **path_to** string with your path to the
       installation folder and the **tools version** with the proper one!
@@ -222,35 +233,36 @@ order to build any HDL project from the repository.
    #. Go to the path where the installation kit for Vivado is located.
    #. Make it executable
    
-   ::
+   .. code-block:: bash
    
       :~$ chmod +x Xilinx_Vivado installation kit.bin
       :~$ ./Xilinx_Vivado installation kit.bin
    
-   ::
    
-      If you unzip the installation kit in Ubuntu, go to the Xilinx_Vivado installation kit and run .xsetup file. Make sure you have the following libraries installed:
+   If you unzip the installation kit in Ubuntu, go to the Xilinx_Vivado
+   installation kit and run .xsetup file. Make sure you have the following
+   libraries installed:
    
-   ::
+   .. code-block:: bash
    
       :~$ sudo apt-get install locales && sudo localedef -i en_US -f UTF-8 en_US.UTF-8
       :~$ sudo ./installLibs.sh
       :~$ sudo apt-get install libxrender1 libxtst6 libxi6
    
-   You must create a .bashrc file with the paths corresponding to the
-   version of Vivado installed. ++++
+   You must create a **.bashrc** file with the paths corresponding to the
+   version of Vivado installed.
 
-++++ How to verify your environment setup \| Run any of the following
-commands. These commands will return a valid path if your setup is good.
+.. dropdown::  How to verify your environment setup
 
-::
+   Run any of the following commands. These commands will return a valid path
+   if your setup is good.
 
-   [~] which git
-   [~] which make
-   [~] which vivado
-   [~] which quartus
+   .. code-block:: bash
 
-++++
+      [~] which git
+      [~] which make
+      [~] which vivado
+      [~] which quartus
 
 Setup the HDL repository
 -------------------------------------------------------------------------------
@@ -260,53 +272,56 @@ repository. This is the best method to get the sources. Here, I am
 cloning the repository inside a directory called **adi**. Please refer
 to the `Git Repository </git>`__ section for more details.
 
-::
+.. code-block:: bash
 
    [~] mkdir adi
    [~] cd adi
    [~] git clone git@github.com:analogdevicesinc/hdl.git
 
-<note> Cloning the HDL repository is done now using SSH, because of
-GitHub security reasons. Check out this documentation on `how to deal
-with SSH keys in
-GitHub <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent>`__.
-Both for `Cygwin <https://www.cygwin.com/>`__ and
-`WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__ it is
-necessary to create a unique SSH key. If you use WSL,to get the best
-performance, you must clone your hdl repository in the WSL file system.
-For example: (\\\\wsl.localhost\\Ubuntu\\home\\username\\hdl) </note>
+.. _warning:
+   :name: hdl_repo
+
+   Cloning the HDL repository is done now using SSH, because of
+   GitHub security reasons. Check out this documentation on `how to deal
+   with SSH keys in
+   GitHub <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent>`__.
+   Both for `Cygwin <https://www.cygwin.com/>`__ and
+   `WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__ it is
+   necessary to create a unique SSH key. If you use WSL,to get the best
+   performance, you must clone your hdl repository in the WSL file system.
+   For example: (:code:`\\\\wsl.localhost\\Ubuntu\\home\\username\\hdl`)
 
 The above command clones the 'default' branch, which is the 'master' for
 HDL. The 'master' branch always points to the latest stable release
 branch, but it also has features **that are not fully tested**. If you
 want to switch to any other branch you need to checkout that branch:
 
-::
+.. code-block:: bash
 
    [~] cd hdl/
    [~] git status
-   [~] git checkout hdl_2021_r1
+   [~] git checkout hdl_2021_r2
 
 If this is your first time cloning, you have all the latest source
 files. If it has been a while, you can simply pull the latest sources
 using **git pull** or **git rebase** if you have local changes.
 
-::
+.. code-block:: bash
 
    [~] git fetch origin               # this shows you what changes will be pulled on your local copy
-   [~] git rebase origin/hdl_2021_r1  # this updates your local copy
-
-++++ Screenshots: \| |image1| ++++
+   [~] git rebase origin/hdl_2021_r2  # this updates your local copy
 
 Building the projects
 -------------------------------------------------------------------------------
 
-<note important>Before building any project, you must have the
-environment prepared and the proper tools. See
-`Tools </resources/fpga/docs/build#tools_and_tool_versions>`__ section
-on what you need to download and
-`Environment </resources/fpga/docs/build#environment>`__ section on how
-to set-up your environment.</note>
+.. _warning:
+
+   Before building any project, you must have the environment prepared and the
+   proper tools. See
+   `Tools </resources/fpga/docs/build#tools_and_tool_versions>`__ section
+   on what you need to download and
+   `Environment </resources/fpga/docs/build#environment>`__ section on how
+   to set-up your environment.
 
 Building an Intel project
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -316,12 +331,10 @@ library components. However, the flow is the same, run 'make' to build
 your project of interest. In this example, I am only interested in the
 'ADRV9371X' project on the 'A10SOC' carrier.
 
-::
+.. code-block:: bash
 
    cd projects/adrv9371x/a10soc
    make
-
-++++ Screen shots: \| |image2| ++++
 
 This assumes that you have the tools and licenses setup correctly. If
 you don't get to the last line, the make failed to build the project.
@@ -329,31 +342,26 @@ There is nothing you can gather from the 'make' output (other than the
 build failed or not), the actual failure is in a log file. So let's see
 how to analyze the build log files and results.
 
-<note important>If you want to use a NIOS-II based project with no-OS
-software, you have to turn off the MMU feature of the NIOS_II processor.
-In that case, the make will get an additional attribute:
-``make NIOS2_MMU=0``\ </note>
+.. note::
+
+   If you want to use a NIOS-II based project with no-OS
+   software, you have to turn off the MMU feature of the NIOS_II processor.
+   In that case, the make will get an additional attribute:
+   ``make NIOS2_MMU=0``\
 
 Intel: checking the build and analyzing results
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you look closely at the 'rule' for this target, you see it is just
 calling 'quartus_sh' with the project TCL file and redirecting the
 output to a log file. In this case 'adrv9371_a10soc_quartus.log' and is
 inside the 'projects/adrv9371x/a10soc' directory.
 
-::
-
-   make: Entering directory '/home/RKutty/gitadi/hdl/projects/adrv9371x/a10soc'
-   rm -rf *.log *_INFO.txt *_dump.txt db *.asm.rpt *.done *.eda.rpt *.fit.* *.map.* *.sta.* *.qsf *.qpf           *.qws *.sof *.cdf *.sld *.qdf hc_output system_bd hps_isw_handoff hps_sdram_*.csv *ddr3_*.csv increme          ntal_db reconfig_mif *.sopcinfo *.jdi *.pin *_summary.csv *.dpf
-   quartus_sh --64bit -t  system_project.tcl  >> adrv9371x_a10soc_quartus.log 2>&1
-   make: Leaving directory '/home/RKutty/gitadi/hdl/projects/adrv9371x/a10soc'
-
 Quick (or detailed) check on files. If you are seeking support from us,
 this is the most relevant information you can provide (do NOT copy-paste
 'make' command line text).
 
-::
+.. code-block:: bash
 
    ls -ltr projects/adrv9371x/a10soc
    tail projects/adrv9371x/a10soc/adrv9371x_a10soc_quartus.log
@@ -363,55 +371,60 @@ this is the most relevant information you can provide (do NOT copy-paste
 And finally, if the project build is successful, the **.sopcinfo** and
 **.sof** files should be in the same folder.
 
-::
+.. code-block:: bash
 
    ls -ltr projects/adrv9371x/a10soc/*.sopcinfo
    ls -ltr projects/adrv9371x/a10soc/*.sof
 
-++++ Screenshots: \| |image5| ++++
+.. dropdown:: Screenshots
+
+   |image5|
 
 You may now use this 'sopcinfo' file as the input to your no-OS and/or
 Linux build. The 'sof' file is used to program the device.
 
-++++ Building an Intel project in WSL - known issues \| For a10Soc and
-s10Soc projects it is very possible to face the following error when you
-make a build: <note important> Current module quartus_fit was
-unexpectedly terminated by signal 9. This may be because some system
-resource has been exhausted, or quartus_fit performed an illegal
-operation. </note> It can also happen that "**make**" get stuck when
-synthesizing some ips. This errors may appear because your device does
-not have enough RAM memory to build your FPGA design. This problem can
-be solved if it is created a linux Swap file. You can find more
-information about what a swap file is in the next
-link:`SwapFile <https://linuxize.com/post/create-a-linux-swap-file/>`__.
-Depending on the size of the project, more or less virtual memory must
-be allocated. If you type in the search bar **System Information**, you
-can see Total Physical Memory and Total Virtual Memory of your system.
-For example for the AD9213 with s10Soc project, it was necessary to
-allocate 15 GB of virtual memory, to be able to make a build for the
-project. To create a swap file you can use the following commands:
+.. dropdown:: Building an Intel project in WSL - known issues
 
-::
+   For a10Soc and s10Soc projects it's very possible to face the following
+   error when you try to build the project:
 
-   :~$ sudo fallocate -l "memory size (e.g 1G, 2G, 8G, etc.)" /swapfile
-   :~$ sudo chmod 600 /swapfile
-   :~$ sudo mkswap /swapfile
-   :~$ sudo swapon /swapfile
+   .. _warning:
 
-If you want to make the change permanent:
+      Current module quartus_fit was
+      unexpectedly terminated by signal 9. This may be because some system
+      resource has been exhausted, or quartus_fit performed an illegal
+      operation. </note> It can also happen that "**make**" get stuck when
+      synthesizing some ips. This errors may appear because your device does
+      not have enough RAM memory to build your FPGA design. This problem can
+      be solved if it is created a linux Swap file. You can find more
+      information about what a swap file is in the next
+      link:`SwapFile <https://linuxize.com/post/create-a-linux-swap-file/>`__.
+      Depending on the size of the project, more or less virtual memory must
+      be allocated. If you type in the search bar **System Information**, you
+      can see Total Physical Memory and Total Virtual Memory of your system.
+      For example for the AD9213 with s10Soc project, it was necessary to
+      allocate 15 GB of virtual memory, to be able to make a build for the
+      project. To create a swap file you can use the following commands:
 
-::
+   .. code-block:: bash
 
-    in /etc/fstab file type the command:
-   /swapfile swap swap defaults 0 0
+      :~$ sudo fallocate -l "memory size (e.g 1G, 2G, 8G, etc.)" /swapfile
+      :~$ sudo chmod 600 /swapfile
+      :~$ sudo mkswap /swapfile
+      :~$ sudo swapon /swapfile
 
-If you want to deactivate the swap memory:
+   If you want to make the change permanent:
 
-::
+   .. code-block:: bash
 
-   :~$ sudo swapoff -v /swapfile
+      # in /etc/fstab file type the command:
+      /swapfile swap swap defaults 0 0
 
-++++
+   If you want to deactivate the swap memory:
+
+   .. code-block:: bash
+
+      :~$ sudo swapoff -v /swapfile
 
 Building a Xilinx project
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
