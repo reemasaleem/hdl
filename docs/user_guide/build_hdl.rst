@@ -66,7 +66,7 @@ order to build any HDL project from the repository.
  
    .. code-block:: bash
       :linenos: 
-   
+
       export PATH=$PATH:/cygdrive/path_to/Xilinx/Vivado/202x.x/bin
       export PATH=$PATH:/cygdrive/path_to/Xilinx/Vivado_HLS/202x.x/bin
       export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/bin
@@ -77,10 +77,8 @@ order to build any HDL project from the repository.
       export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/cygdrive/path_to/intelFPGA_pro/2x.x/quartus/bin
    
-   .. note::
-
-      Replace the **path_to** string with your path to the
-      installation folder and the **tools version** with the proper one!
+   Replace the **path_to** string with your path to the
+   installation folder and the **tools version** with the proper one!
 
 
 .. dropdown:: For Windows environment with WSL
@@ -158,10 +156,8 @@ order to build any HDL project from the repository.
       export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/mnt/path_to/intelFPGA_pro/2x.x/quartus/bin
    
-   .. note::
-
-      Replace the **path_to** string with your path to the
-      installation folder and the **tools version** with the proper one!
+   Replace the **path_to** string with your path to the
+   installation folder and the **tools version** with the proper one!
    
    .. warning::
 
@@ -194,10 +190,8 @@ order to build any HDL project from the repository.
       export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/opt/path_to/intelFPGA_pro/2x.x/quartus/bin
    
-   .. note::
-
-      Replace the **path_to** string with your path to the
-      installation folder and the **tools version** with the proper one!
+   Replace the **path_to** string with your path to the
+   installation folder and the **tools version** with the proper one!
 
 .. dropdown:: For Linux environment
 
@@ -219,7 +213,7 @@ order to build any HDL project from the repository.
       export PATH=$PATH:"/opt/intelFPGA_pro/2x.x/quartus/bin"
    
    Replace the **path_to** string with your path to the
-   installation folder and the **tools version** with the proper one!`
+   installation folder and the **tools version** with the proper one!
 
 .. dropdown:: How to install Vivado on WSL 
    
@@ -230,8 +224,8 @@ order to build any HDL project from the repository.
    
    .. code-block:: bash
    
-      :~$ chmod +x Xilinx_Vivado installation kit.bin
-      :~$ ./Xilinx_Vivado installation kit.bin
+      :~$ chmod +x Xilinx_Vivado_installation_kit.bin
+      :~$ ./Xilinx_Vivado_installation_kit.bin
    
    
    If you unzip the installation kit in Ubuntu, go to the Xilinx_Vivado
@@ -343,7 +337,7 @@ how to analyze the build log files and results.
    In that case, the make will get an additional attribute:
    ``make NIOS2_MMU=0``\
 
-Intel: checking the build and analyzing results
+Checking the build and analyzing results
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you look closely at the 'rule' for this target, you see it is just
@@ -360,7 +354,10 @@ this is the most relevant information you can provide (do NOT copy-paste
    ls -ltr projects/adrv9371x/a10soc
    tail projects/adrv9371x/a10soc/adrv9371x_a10soc_quartus.log
 
-++++ Screenshots: \| |image3| ++++ ++++ Screenshots: \| |image4| ++++
+.. dropdown:: Screenshots
+
+   |image3|
+   |image4|
 
 And finally, if the project build is successful, the **.sopcinfo** and
 **.sof** files should be in the same folder.
@@ -429,12 +426,15 @@ components. The way of building a project in Cygwin and WSL is the same,
 with small differences. In this example, it is building the 'DAQ2'
 project on the 'ZC706' carrier.
 
-::
+.. code-block:: bash
 
    cd projects/daq2/zc706
    make
 
-++++ Screenshots: \| |image6| ++++ ++++ Screenshots: \| |image7| ++++
+.. dropdown:: Screenshots
+
+   |image6|
+   |image7|
 
 The **make** builds all the libraries first and then builds the project.
 This assumes that you have the tools and licenses setup correctly. If
@@ -453,7 +453,7 @@ the **ADI_USE_OOC_SYNTHESIS** system variable. By setting the
 maximum parallel out-of-context synthesis jobs. If not set, the default
 parallel job number is set to 4.
 
-::
+.. code-block:: bash
 
    export ADI_USE_OOC_SYNTHESIS=y
    export ADI_MAX_OOC_JOBS=8
@@ -469,18 +469,20 @@ VCU118 once compiled, it will be reused on other projects. Using the IP
 cache will speed up the re-compiles of every project in OOC mode since
 the cache is not cleared as with normal compile flow.
 
-<note important> Starting with Vivado 2020.2, Out-of-Context is the
-default mode. There is no need to set ADI_USE_OOC_SYNTHESIS variable.
+.. warning::
 
-Set:
+   Starting with Vivado 2020.2, Out-of-Context is the
+   default mode. There is no need to set ADI_USE_OOC_SYNTHESIS variable.
 
-::
+   Set:
 
-   export ADI_USE_OOC_SYNTHESIS=n
+   .. code-block:: bash
 
-only in case you want to use Project Mode. </note>
+      export ADI_USE_OOC_SYNTHESIS=n
 
-Xilinx: checking the build and analyzing results of library components
+   only in case you want to use Project Mode.
+
+Checking the build and analyzing results of library components
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you look closely, you see what it is actually doing. It enters a
@@ -489,7 +491,7 @@ commands are in the source 'Tcl' file and output is redirected to a log
 file. In the below example that is 'axi_ad9144_ip.log' inside the
 'library/axi_ad9144' directory.
 
-::
+.. code-block:: bash
 
    make[1]: Entering directory '/home/RKutty/gitadi/hdl/library/axi_ad9144'
    rm -rf *.cache *.data *.xpr *.log component.xml *.jou xgui *.ip_user_files *.srcs *.hw *.sim .Xil
@@ -500,12 +502,15 @@ the contents of this log file** before going crazy on us. You may also
 do a sanity checking just to see what are the generated files and the
 log file contents.
 
-::
+.. code-block:: bash
 
    ls -ltr library/axi_ad9144
    tail library/axi_ad9144/axi_ad9144_ip.log
 
-++++ Screenshots: \| |image8| ++++ ++++ Screenshots: \| |image9| ++++
+.. dropdown:: Screenshots
+
+   |image8|
+   |image9|
 
 Xilinx: checking the build and analyzing results of projects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -515,7 +520,7 @@ It is exactly the same 'rule' as the library component. The log file, in
 this example, is called 'daq2_zc706_vivado.log' and is inside the
 'projects/daq2/zc706' directory.
 
-::
+.. code-block:: bash
 
    rm -rf *.cache *.data *.xpr *.log *.jou xgui *.runs *.srcs *.sdk *.hw *.sim .Xil *.ip_user_files
    vivado -mode batch -source system_project.tcl >> daq2_zc706_vivado.log 2>&1
@@ -523,67 +528,77 @@ this example, is called 'daq2_zc706_vivado.log' and is inside the
 
 Quick (or detailed) check on files.
 
-::
+.. code-block:: bash
 
    ls -ltr projects/daq2/zc706
    tail projects/daq2/zc706/daq2_zc706_vivado.log
 
-++++ Screenshots: \| |image10| ++++ ++++ Screenshots: \| |image11| ++++
+.. dropdown:: Screenshots
+
+   |image10|
+   |image11|
 
 And finally, if the project build is successful, the hdf file should be
 in the 'sdk' folder.
 
-::
+.. code-block:: bash
 
    ls -ltr projects/daq2/zc706/daq2_zc706.sdk
 
-++++ Screenshots: \| |image12| ++++
+.. dropdown:: Screenshots
+
+   |image12|
 
 You may now use this 'hdf' file as the input to your no-OS and/or Linux
 build. Starting with Vivado 2019.3, output file extension got change
 from .hdf to .xsa.
 
-++++ Building a Xilinx project in WSL - known issues \| For some
-projects it is very possible to face the following error when you make a
-build: <note important> $RDI_PROG" "$@" crash" "Killed "$RDI_PROG" "$@"
-</note> This error may appear because your device does not have enough
-RAM memory to build your FPGA design. For example, the project
-AD-FMCDAQ3-EBZ with Virtex UltraScale+ VCU118 (XCVU9P device) requires
-20 GB (typical memory) and a peak of 32 GB memory RAM. The next link
-shows the typical and peak Vivado memory usage per target
-device:`MemoryUsage <https://www.xilinx.com/products/design-tools/vivado/vivado-ml.html#memory>`__.
-This problem can be solved if it is created a linux Swap file. You can
-find more information about what a swap file is in the next
-link:`SwapFile <https://linuxize.com/post/create-a-linux-swap-file/>`__
-To create a swap file you can use the following commands:
+.. dropdown:: Building a Xilinx project in WSL - known issues
 
-::
+   For some projects it is very possible to face the following error when you make a
+   build:
 
-   :~$ sudo fallocate -l "memory size (e.g 1G, 2G, 8G, etc.)" /swapfile
-   :~$ sudo chmod 600 /swapfile
-   :~$ sudo mkswap /swapfile
-   :~$ sudo swapon /swapfile
+   .. warning:: 
 
-If you want to make the change permanent:
+      $RDI_PROG" "$@" crash" "Killed "$RDI_PROG" "$@"
+   
+   This error may appear because your device does not have enough
+   RAM memory to build your FPGA design. For example, the project
+   AD-FMCDAQ3-EBZ with Virtex UltraScale+ VCU118 (XCVU9P device) requires
+   20 GB (typical memory) and a peak of 32 GB memory RAM. The next link
+   shows the typical and peak Vivado memory usage per target
+   device:`MemoryUsage <https://www.xilinx.com/products/design-tools/vivado/vivado-ml.html#memory>`__.
+   This problem can be solved if it is created a linux Swap file. You can
+   find more information about what a swap file is in the next
+   link:`SwapFile <https://linuxize.com/post/create-a-linux-swap-file/>`__
+   To create a swap file you can use the following commands:
+   
+   .. code-block:: bash
+   
+      :~$ sudo fallocate -l "memory size (e.g 1G, 2G, 8G, etc.)" /swapfile
+      :~$ sudo chmod 600 /swapfile
+      :~$ sudo mkswap /swapfile
+      :~$ sudo swapon /swapfile
+   
+   If you want to make the change permanent:
+   
+   .. code-block:: bash
+   
+      # in /etc/fstab file type the command:
+      /swapfile swap swap defaults 0 0
+   
+   If you want to deactivate the swap memory:
+   
+   .. code-block:: bash
+   
+      :~$ sudo swapoff -v /swapfile
 
-::
-
-    in /etc/fstab file type the command:
-   /swapfile swap swap defaults 0 0
-
-If you want to deactivate the swap memory:
-
-::
-
-   :~$ sudo swapoff -v /swapfile
-
-++++
 
 Tools and Tool versions
 ===============================================================================
 
 Tools
------
+-------------------------------------------------------------------------------
 
 ADI provides reference designs for both Intel and Xilinx. Please note
 that we have no preference over Intel or Xilinx, if possible we try to
@@ -593,29 +608,55 @@ should be aware of when building the projects. This is NOT a comparison
 when using ADI HDL repository on these tools. A red text indicates that
 you must pay extra attention.
 
-+-------------------------------------------+
-| < 100% 25% 37% 38% >                      |
-+-------------------------------------------+
-| Notes                                     |
-+-------------------------------------------+
-| Main Tools                                |
-+-------------------------------------------+
-| EDK Tools                                 |
-+-------------------------------------------+
-| SDK Tools                                 |
-+-------------------------------------------+
-| Building Library                          |
-+-------------------------------------------+
-| Building the project                      |
-+-------------------------------------------+
-| Timing Analysis                           |
-+-------------------------------------------+
-| SDK (Microblaze/Nios)                     |
-+-------------------------------------------+
-| SDK (ARM/FPGA combo)                      |
-+-------------------------------------------+
-| Upgrading/Version changes (non-ADI cores) |
-+-------------------------------------------+
+.. list-table:: Tools
+   :widths: auto
+   :header-rows: 1
+
+   * - Notes
+     - Intel
+     - Xilinx
+   * - Main tools
+     - Quartus
+     - Vivado
+   * - EDK tools
+     - QSys
+     - IP Integrator
+   * - SDK tools
+     - Eclipse-Nios, Eclipse-DS5
+     - Eclipse
+   * - Building library
+     - :green:`Do nothing. Quartus only needs the _hw.tcl and QSys parses them
+       whenever invoked`
+     - :red:`Need to build each and every library component. Vivado has its 
+       own way of identifying library components. This means you must build 
+       ALL the library components first before starting the project. You must 
+       re-run these scripts if there are any modifications`
+   * - Building the project
+     - Source the system_project.tcl file
+     - 
+   * - Timing analysis
+     - The projects are usually tested and should be free of timing errors.
+       There is no straightforward method to verify a timing pass (it usually 
+       involves writing a TCL proc by itself) on both the tools. The make 
+       build will fail and return with an error if the timing is not met 
+       (on both tools).
+     -
+   * - SDK (Microblaze/Nios)
+     - Use SOPCINFO and SOF files
+     - Use XSA file
+   * - SDK (ARM/FPGA combo)
+     - :red:`Not so well-thought procedure. Need to run different tools, 
+       manually edit build files etc. The steps involved are running 
+       bsp-editor, running make, modifying linker scripts, makefiles and 
+       sources, importing to SDK`
+     - :green:`Same procedure as Microblaze`
+   * - Upgrading/Version changes (non-ADI cores)
+     - :green:`Quartus automatically updates the cores. Almost hassle-free for 
+       most of the cores`
+     - :red:`Vivado does not automatically update the revisions in TCL flow 
+       (it does on GUI). It will stop at the first version mismatch (a rather 
+       slow and frustrating process)`
+
 
 Tool versions
 -------------------------------------------------------------------------------
@@ -631,15 +672,17 @@ file of each branch. The script, which builds the project always double
 check the used tool version, and notifies the user, if he or she trying
 to use an unsupported version of tools.
 
-<WRAP center round info 100%> There are several ways to find out which
-tool version you should use. The easiest way is to check the `release
-notes <https://github.com/analogdevicesinc/hdl/releases>`__. You may
-also check out or browse the desired branch, and verify the tool version
-in the base Tcl script
-(`./hdl/projects/scripts/adi_project_xilinx.tcl <https://github.com/analogdevicesinc/hdl/blob/master/projects/scripts/adi_project_xilinx.tcl#L4>`__)
-or
-(`./hdl/projects/scripts/adi_project_intel.tcl <https://github.com/analogdevicesinc/hdl/blob/master/projects/scripts/adi_project_intel.tcl#L5>`__),
-which build the projects.</WRAP>
+.. note::
+
+   There are several ways to find out which tool version you should use. 
+   The easiest way is to check the `release
+   notes <https://github.com/analogdevicesinc/hdl/releases>`__. You may
+   also check out or browse the desired branch, and verify the tool version
+   in the base Tcl script
+   (`./hdl/projects/scripts/adi_project_xilinx.tcl <https://github.com/analogdevicesinc/hdl/blob/master/projects/scripts/adi_project_xilinx.tcl#L4>`__)
+   or
+   (`./hdl/projects/scripts/adi_project_intel.tcl <https://github.com/analogdevicesinc/hdl/blob/master/projects/scripts/adi_project_intel.tcl#L5>`__),
+   which build the projects.
 
 Environment
 ===============================================================================
@@ -662,7 +705,7 @@ worse), the following snippet is from a **.bashrc** file. Please note
 that unless you are an expert at manipulating these things, leave it to
 the tools to set up the environment.
 
-::
+.. code-block:: bash
 
    export PATH=$PATH:/opt/Xilinx/Vivado/202x.x/bin:/opt/Xilinx/Vitis/202x.x/bin
    export PATH=$PATH:/opt/intelFPGA_pro/2x.x/quartus/bin
@@ -675,7 +718,7 @@ The best option on Windows is to use
 'make' and 'git' packages. The manual changes to your '.bashrc' do a lot
 look like that of the Linux environment.
 
-::
+.. code-block:: bash
 
    export PATH=$PATH:/cygdrive/d/Xilinx/Vivado/202x.x/bin:/cygdrive/d/Xilinx/Vitis/202x.x/bin
    export PATH=$PATH:/cygdrive/d/intelFPGA_pro/2x.x/quartus/bin64
@@ -684,7 +727,7 @@ A very good alternative to Cygwin is
 `WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__. The
 manual changes to your '.bashrc' looks like:
 
-::
+.. code-block:: bash
 
    export PATH=$PATH:/opt/path_to/Vivado/202x.x/bin:/opt/Vitis/202x.x/bin
    export PATH=$PATH:/opt/path_to/quartus/bin
@@ -701,11 +744,12 @@ C:\\Xilinx\\Vitis\\202x.x\\gnuwin\\bin.
 Make: supported targets
 ===============================================================================
 
-<WRAP center round tip 100%>
-`Make <https://www.gnu.org/software/make/manual/make.html>`__ is a build
-automation tool, which uses **Makefile(s)** to define a set of
-directives ('rules') about how to compile and/or link a program
-('targets'). </WRAP>
+.. note::
+
+   `Make <https://www.gnu.org/software/make/manual/make.html>`__ is a build
+   automation tool, which uses **Makefile(s)** to define a set of
+   directives ('rules') about how to compile and/or link a program
+   ('targets').
 
 In general, always run 'make' within a project folder such as
 'hdl/projects/daq2/a10soc' or 'hdl/projects/daq2/zc706'. There should
@@ -761,55 +805,11 @@ The following 'targets' are supported.
 | :::              | make daq2.zc706 ; ## build projects/daq2/zc706.  |
 +------------------+--------------------------------------------------+
 
-Xilinx auto Tcl build
+Xilinx auto Tcl build ---- REMOVED
 ===============================================================================
 
-<WRAP center round alert 100%> We do not recommend using this flow
-(created mostly for Windows users that can't use GNU make). The benefit
-of this flow is that a user can build all desired libraries without
-manually building each library. The disadvantage comparing with make is
-that the script will rebuild an IP regardless if its sources were
-modified or not (timestamp comparison). </WRAP>
-
-**Open Vivado GUI, and in the Tcl console type:**
-
-::
-
-   cd c:/github/hdl/projects/daq2/zc706
-   source ../../scripts/adi_make.tcl
-
-This will get you access to:
-
-#. adi_make::lib
-#. adi_make::boot_bin
-
-Building the libraries (adi_make::lib)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This command allows you to build the desired libraries directly from the
-target project folder location. It accepts as arguments "all" or you can
-specify a specific library name.
-
-.. code:: bash
-
-     # How to use:
-     adi_make::lib all # builds all libraries on which the project is depending on
-     adi_make::lib axi_dmac # builds only the axi_dmac IP (and its dependencies)
-     adi_make::lib jesd204/jesd204_rx
-
-Building the project itself
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-After all required libraries are built, run **source
-./system_project.tcl** in the Tcl console of Vivado, to build the
-project.
-
-::
-
-   source ./system_project.tcl
-
 Preparing the SD card
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===============================================================================
 
 Firstly, you have to check this
 `tutorial </resources/tools-software/linux-software/zynq_images/windows_hosts>`__
@@ -842,43 +842,31 @@ More info on how to generate this files you will find in the
 `References </resources/fpga/docs/build#References>`__ section or on
 ReadMe.txt file from boot partition.
 
-++++ How to build the boot image BOOT.BIN in WSL \| After obtaining .xsa
-file, you must be sure that you have done source for Vivado and Vitis.
-To create boot.bin is recommended to run build_boot_bin.sh in
-terminal.To do this, the file can be called in the following form:
+.. dropdown:: How to build the boot image BOOT.BIN in WSL
 
-::
+   After obtaining .xsa file, you must be sure that you have done source for 
+   Vivado and Vitis. To create boot.bin is recommended to run 
+   build_boot_bin.sh in terminal.To do this, the file can be called in the 
+   following manner:
 
-     chmod +x build_boot_bin.sh
-     usage: build_boot_bin.sh system_top.xsa u-boot.elf [output-archive]
+   .. code-block:: bash
 
-You can download the script by accessing the following link:
-`build_boot_bin.sh <https://wiki.analog.com/resources/tools-software/linux-software/build-the-zynq-boot-image>`__.
+        chmod +x build_boot_bin.sh
+        usage: build_boot_bin.sh system_top.xsa u-boot.elf [output-archive]
 
-++++
-
-Make the BOOT.BIN (adi_make::boot_bin)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-<WRAP center round alert 100%> Not for Linux users. To build the
-BOOT.BIN in Linux see the
-`References </resources/fpga/docs/build#References>`__ section. </WRAP>
-
-As the name states, this procedure will build the "BOOT.BIN". It does
-not require any arguments.
-
-::
-
-     adi_make::boot_bin
+   You can download the script by accessing the following link:
+   `build_boot_bin.sh <https://wiki.analog.com/resources/tools-software/linux-software/build-the-zynq-boot-image>`__.
 
 Building manually
 ===============================================================================
 
-<WRAP center round alert 100%> We do not recommend using this flow, in
-general people are losing a lot of valuable time and nerve during this
-process. </WRAP>
+.. warning::
 
-Intel: Building manually on Quartus
+   We do not recommend using this flow, in
+   general people are losing a lot of valuable time and nerve during this
+   process.
+
+Building manually in Quartus GUI
 -------------------------------------------------------------------------------
 
 There is no need to build any library for Quartus. However, you do need
@@ -888,25 +876,30 @@ You get to this menu from the **Tools->Options**. The tool then parses
 these directories and picks up a **\_hw.tcl** file (e.g.
 axi_ad9250_hw.tcl). The peripherals should show up on QSYS library.
 
-++++ Screen shots: \| |image13| ++++
+.. dropdown:: Screenshots
+
+   |image13|
 
 You may now run the project (generate the sof and software hand-off
 files) on Quartus. Open the GUI and select TCL console. At the prompt
 change the directory to where the project is, and source the
 **system_project.tcl** file.
 
-::
+.. code-block:: bash
 
-   cd c:/github/hdl/projects/fmcjesdadc1/a5gt
+   cd c:/github/hdl/projects/daq2/a10soc
    source ./system_project.tcl
 
 You will see commands being executed, the script uses a board design in
 QSYS, generate all the IP targets, synthesize the netlist and
 implementation.
 
-++++ Screen shots: \| |image14| |image15| ++++
+.. dropdown:: Screenshots
 
-Xilinx: Building manually on Vivado
+   |image14|
+   |image15|
+
+Building manually in Vivado GUI
 -----------------------------------
 
 In Vivado (Xilinx projects), you must build all the required libraries
@@ -914,10 +907,10 @@ for your targeted project. Open the GUI and at the TCL console change
 the directory to where the libraries are, then source the '\_ip.tcl'
 file.
 
-::
+.. code-block::
 
-   cd c:/github/hdl/library/axi_ad9122
-   source ./axi_ad9122_ip.tcl
+   cd c:/github/hdl/library/axi_ltc2387
+   source ./axi_ltc2387_ip.tcl
 
 You will see commands being executed, and the GUI will change into a
 project window. There is nothing to do here, you could browse the source
@@ -925,23 +918,29 @@ if you prefer to do synthesis as stand-alone and such things. After
 you're done, quit and change the directory to the next library and
 continue the process.
 
-++++ Screen shots: \| |image16| |image17| ++++
+.. dropdown:: Screenshots
+
+   |image16|
+   |image17|
 
 After you built all the required libraries for your project, you can run
 the project (generate bitstream and export the design to SDK). This is
 the same procedure as above except for changes in path and Tcl file
 names:
 
-::
+.. code-block:: bash
 
-   cd c:/github/hdl/projects/fmcomms1/zc706
+   cd c:/github/hdl/projects/cn0577/zed
    source ./system_project.tcl
 
 Same behavior as above, the GUI will change into a project window. The
 script will create a board design in IPI, generate all the IP targets,
 synthesize the netlist and implementation.
 
-++++ Screen shots: \| |image18| |image19| ++++
+.. dropdown:: Screenshots
+
+   |image18|
+   |image19|
 
 References
 ===============================================================================
@@ -970,7 +969,7 @@ Xilinx: Vivado
 <fc #ffa500> ERROR: [BD 5-216] VLNV <analog.com:user:axi_clkgen:1.0> is
 not supported for the current part.
 
-::
+.. code-block::
 
    ERROR: [Common 17-39] 'create_bd_cell' failed due to earlier errors.
         while executing 
@@ -981,20 +980,19 @@ You haven't generated the library component or have the wrong user IP
 repository setting. If you were using the GUI flow, now is a good time
 to evaluate the 'make' flow.
 
-<fc #ffa500>CRITICAL WARNING: [IP_Flow 19-459] IP file
-'C:/Git/hdl/library/common/ad_pnmon.v' appears to be outside of the
-project area 'C:/Git/hdl/library/axi_ad9467'. You can use the
-ipx::package_project -import_files option to copy remote files into the
-IP directory.</fc>
+.. code-block::
+
+   CRITICAL WARNING: [IP_Flow 19-459] IP file
+   'C:/Git/hdl/library/common/ad_pnmon.v' appears to be outside of the
+   project area 'C:/Git/hdl/library/axi_ad9467'. You can use the
+   ipx::package_project -import_files option to copy remote files into the
+   IP directory.
 
 These warnings appear because the libraries are using common modules
 which are located under the **./library/common/**. These warnings can be
 ignored, they won't affect the functionality of the IP or the project.
 However, you may not be able to 'archive' these projects. The irony is
 that it does copy these files to the project area, but ignores them.
-
-|Releases and supported tool versions#hdl|Main page#run|Running on
-hardware|
 
 .. |image1| image:: /resources/fpga/docs/hdl/hdl_cygwin_4.png
    :width: 800px
@@ -1034,4 +1032,3 @@ hardware|
    :width: 800px
 .. |image19| image:: /resources/fpga/docs/hdl/vivado_projects_2.jpg
    :width: 800px
-.. |Releases and supported tool versions#hdl|Main page#run|Running on hardware| image:: navigation HDL User Guide#releases
