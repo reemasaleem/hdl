@@ -77,8 +77,7 @@ order to build any HDL project from the repository.
       export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/cygdrive/path_to/intelFPGA_pro/2x.x/quartus/bin
    
-   .. _note::
-      :name: note_windows_cygwin
+   .. note::
 
       Replace the **path_to** string with your path to the
       installation folder and the **tools version** with the proper one!
@@ -94,8 +93,7 @@ order to build any HDL project from the repository.
    PowerShell or Windows Command Prompt in Administrator mode. In the link
    above you can find the installation guide for wsl on windows. 
 
-   .. _note::
-      :name: note_windows_wsl1
+   .. note::
 
       When installing wsl, the Ubuntu distribution will be installed by
       default
@@ -160,14 +158,12 @@ order to build any HDL project from the repository.
       export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/mnt/path_to/intelFPGA_pro/2x.x/quartus/bin
    
-   .. _note::
-      :name: note_windows_wsl2
+   .. note::
 
       Replace the **path_to** string with your path to the
       installation folder and the **tools version** with the proper one!
    
-   .. _warning::
-      :name: war_windows_wsl
+   .. warning::
 
       Before building any project, it is necessary to install
       the Linux version for Vivado (see `How to install Vivado on WSL
@@ -198,8 +194,7 @@ order to build any HDL project from the repository.
       export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/opt/path_to/intelFPGA_pro/2x.x/quartus/bin
    
-   .. _note::
-      :name: note_windows_wsl3
+   .. note::
 
       Replace the **path_to** string with your path to the
       installation folder and the **tools version** with the proper one!
@@ -278,8 +273,7 @@ to the `Git Repository </git>`__ section for more details.
    [~] cd adi
    [~] git clone git@github.com:analogdevicesinc/hdl.git
 
-.. _warning:
-   :name: hdl_repo
+.. warning::
 
    Cloning the HDL repository is done now using SSH, because of
    GitHub security reasons. Check out this documentation on `how to deal
@@ -314,7 +308,7 @@ using **git pull** or **git rebase** if you have local changes.
 Building the projects
 -------------------------------------------------------------------------------
 
-.. _warning:
+.. warning::
 
    Before building any project, you must have the environment prepared and the
    proper tools. See
@@ -388,7 +382,7 @@ Linux build. The 'sof' file is used to program the device.
    For a10Soc and s10Soc projects it's very possible to face the following
    error when you try to build the project:
 
-   .. _warning:
+   .. warning::
 
       Current module quartus_fit was
       unexpectedly terminated by signal 9. This may be because some system
