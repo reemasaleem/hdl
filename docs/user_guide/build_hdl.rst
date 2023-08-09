@@ -517,7 +517,7 @@ log file contents.
    |image8|
    |image9|
 
-Xilinx: checking the build and analyzing results of projects
+Checking the build and analyzing results of projects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The last thing make does in this above example is building the project.
@@ -543,8 +543,8 @@ Quick (or detailed) check on files.
    |image10|
    |image11|
 
-And finally, if the project build is successful, the hdf file should be
-in the 'sdk' folder.
+And finally, if the project build is successful, the .xsa file should be
+in the '.sdk' folder.
 
 .. code-block:: bash
 
@@ -554,9 +554,11 @@ in the 'sdk' folder.
 
    |image12|
 
-You may now use this 'hdf' file as the input to your no-OS and/or Linux
-build. Starting with Vivado 2019.3, output file extension got change
-from .hdf to .xsa.
+You may now use this '.xsa' file as the input to your no-OS and/or Linux
+build.
+
+Starting with Vivado 2019.3, the output file extension was changed from
+.hdf to .xsa.
 
 .. dropdown:: Building a Xilinx project in WSL - known issues
 
@@ -568,14 +570,18 @@ from .hdf to .xsa.
       $RDI_PROG" "$@" crash" "Killed "$RDI_PROG" "$@"
 
    This error may appear because your device does not have enough
-   RAM memory to build your FPGA design. For example, the project
-   AD-FMCDAQ3-EBZ with Virtex UltraScale+ VCU118 (XCVU9P device) requires
-   20 GB (typical memory) and a peak of 32 GB memory RAM. The next link
-   shows the typical and peak Vivado memory usage per target
-   device:`MemoryUsage <https://www.xilinx.com/products/design-tools/vivado/vivado-ml.html#memory>`__.
-   This problem can be solved if it is created a linux Swap file. You can
-   find more information about what a swap file is in the next
-   link:`SwapFile <https://linuxize.com/post/create-a-linux-swap-file/>`__
+   RAM memory to build your FPGA design.
+
+   For example, the project AD-FMCDAQ3-EBZ with Virtex UltraScale+ VCU118
+   (XCVU9P device) requires 20GB (typical memory) and a peak of 32GB RAM
+   memory. The following link shows the typical and peak Vivado memory usage
+   per target device: `MemoryUsage
+   <https://www.xilinx.com/products/design-tools/vivado/vivado-ml.html#memory>`__.
+
+   This problem can be solved if a linux Swap file is created. You can
+   find more information about what a swap file is at this link:
+   `SwapFile <https://linuxize.com/post/create-a-linux-swap-file/>`__
+
    To create a swap file you can use the following commands:
 
    .. code-block:: bash
@@ -599,19 +605,20 @@ from .hdf to .xsa.
       :~$ sudo swapoff -v /swapfile
 
 
-Tools and Tool versions
+Tools and their versions
 ===============================================================================
 
 Tools
 -------------------------------------------------------------------------------
 
-ADI provides reference designs for both Intel and Xilinx. Please note
-that we have no preference over Intel or Xilinx, if possible we try to
+ADI provides reference designs for both Intel and AMD Xilinx. Please note
+that we have no preference over Intel or AMD Xilinx; if possible, we try to
 port the designs on both platforms. However, there are a few things you
-should be aware of when building the projects. This is NOT a comparison
-(generic or otherwise)- this is what you should expect and understand
-when using ADI HDL repository on these tools. A red text indicates that
-you must pay extra attention.
+should be aware of when building the projects.
+
+This is NOT a comparison (generic or otherwise)- this is what you should
+expect and understand when using ADI HDL repository on these tools.
+**A red text indicates that you must pay extra attention.**
 
 .. list-table:: Tools
    :widths: auto
@@ -638,14 +645,16 @@ you must pay extra attention.
        re-run these scripts if there are any modifications`
    * - Building the project
      - Source the system_project.tcl file
-     -
+     - Source the system_project.tcl file
    * - Timing analysis
      - The projects are usually tested and should be free of timing errors.
        There is no straightforward method to verify a timing pass (it usually
        involves writing a TCL proc by itself) on both the tools. The make
-       build will fail and return with an error if the timing is not met
-       (on both tools).
-     -
+       build will fail and return with an error if the timing is not met.
+     - The projects are usually tested and should be free of timing errors.
+       There is no straightforward method to verify a timing pass (it usually
+       involves writing a TCL proc by itself) on both the tools. The make
+       build will fail and return with an error if the timing is not met.
    * - SDK (Microblaze/Nios)
      - Use SOPCINFO and SOF files
      - Use XSA file
