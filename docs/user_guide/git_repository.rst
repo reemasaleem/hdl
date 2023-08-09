@@ -13,12 +13,12 @@ Knows how to
 the repository, how to check its
 `status <https://git-scm.com/docs/git-status>`__ or how to
 `switch <https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging>`__
-between branches. 
+between branches.
 
 .. note::
    A basic git knowledge is required in order to work with these source files,
    if you do not have any, don't worry!
-  
+
    There are a lot of great resources and tutorials about git all over the
    `web <http://lmgtfy.com/?q=git+tutorial>`__.
 
@@ -148,11 +148,11 @@ generate all the other files required for IP integration (\*_ip.tcl for
 Vivado and \*_hw.tcl for Quartus) .
 
 .. note::
-   Regarding Vivado, all the IPs must be 'packed' before being used in a 
-   design. 
-   
-   To find more information about how to build the libraries, please visit 
-   the `Building & Generating programming files 
+   Regarding Vivado, all the IPs must be 'packed' before being used in a
+   design.
+
+   To find more information about how to build the libraries, please visit
+   the `Building & Generating programming files
    </resources/fpga/docs/build>`__ section.
 
 
@@ -177,11 +177,11 @@ are in doubt, ask us on :ez:`fpga`.
 .. note::
    You can find the release notes on the Github page of the
    repository:
-   
+
    https://github.com/analogdevicesinc/hdl/releases
 
    The latest version of tools used on master can be found at:
-   :git-hdl:`master:scripts/adi_env.tcl` (*required_vivado_version* and 
+   :git-hdl:`master:scripts/adi_env.tcl` (*required_vivado_version* and
    *required_quartus_version* variables). For Intel Quartus Standard, the version
    is specified in each project that uses it, depending on the carrier.
 

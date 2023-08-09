@@ -40,10 +40,10 @@ new version. After which, update the TCL scripts accordingly.
 The versions are specified in the following format.
 
 .. code-block:: tcl
-   :linenos: 
+   :linenos:
 
-   add_instance sys_cpu altera_nios2_gen2 16.0 
-   set sys_mb [create_bd_cell -type ip -vlnv xilinx.com:ip:microblaze:9.5 sys_mb] 
+   add_instance sys_cpu altera_nios2_gen2 16.0
+   set sys_mb [create_bd_cell -type ip -vlnv xilinx.com:ip:microblaze:9.5 sys_mb]
 
 You should now be able to build the design and test things out. In most
 cases, it should work without much effort. If it doesn't do an
@@ -64,8 +64,8 @@ Release branches
    * - :git-hdl:`master`
      - Quartus Pro 21.4
      - Vivado 2022.2
-     - 
-     - 
+     -
+     -
    * - :git-hdl:`hdl_2021_r2`
      - Quartus Pro 21.4
      - Vivado 2021.2

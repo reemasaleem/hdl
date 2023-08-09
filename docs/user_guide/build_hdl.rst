@@ -7,11 +7,11 @@ Build HDL
 and build the designs. That means the burden of modifying and building
 these projects is on you.**
 
-The build process, obviously, depends on certain software and tools. 
-There are many ways you could use this software and tools. 
+The build process, obviously, depends on certain software and tools.
+There are many ways you could use this software and tools.
 
-In other words, how you want to build these projects is entirely up to you. 
-The only catch is that if you run into problems, you must use basic diligence 
+In other words, how you want to build these projects is entirely up to you.
+The only catch is that if you run into problems, you must use basic diligence
 in resolving it yourself.
 
 Here we are giving you a quick rundown on how we build things. That is,
@@ -23,14 +23,14 @@ these.**
 Setup and check your environment
 -------------------------------------------------------------------------------
 
-This section contains a guide about how to setup your environment to build any 
+This section contains a guide about how to setup your environment to build any
 HDL project from the repository:
 
-#. Install the required FPGA design suite. We use `AMD Xilinx Vivado 
-   <https://www.xilinx.com/support/download.html>`__ and `Intel Quartus Pro 
-   and Standard <https://www.intel.com/content/www/us/en/products/details/fpga/development-tools/quartus-prime/resource.html>`__. 
-   You can find information about the proper version in our 
-   `release notes <https://github.com/analogdevicesinc/hdl/releases>`__. 
+#. Install the required FPGA design suite. We use `AMD Xilinx Vivado
+   <https://www.xilinx.com/support/download.html>`__ and `Intel Quartus Pro
+   and Standard <https://www.intel.com/content/www/us/en/products/details/fpga/development-tools/quartus-prime/resource.html>`__.
+   You can find information about the proper version in our
+   `release notes <https://github.com/analogdevicesinc/hdl/releases>`__.
    Make sure that you're always using the latest release.
 #. The proper Vivado/Quartus version can be found in:
 
@@ -67,9 +67,9 @@ HDL project from the repository:
    installation directory to your PATH environment variable. You can do
    that by modifying your **~/.bashrc** file, by adding the following lines
    **changed accordingly to your installation directories**. For example:
- 
+
    .. code-block:: bash
-      :linenos: 
+      :linenos:
 
       export PATH=$PATH:/cygdrive/path_to/Xilinx/Vivado/202x.x/bin
       export PATH=$PATH:/cygdrive/path_to/Xilinx/Vivado_HLS/202x.x/bin
@@ -80,8 +80,8 @@ HDL project from the repository:
       export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_le/bin
       export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/cygdrive/path_to/intelFPGA_pro/2x.x/quartus/bin
-   
-   Replace the **path_to** string with your path to the installation folder 
+
+   Replace the **path_to** string with your path to the installation folder
    and the **tools version** with the proper one!
 
 
@@ -90,60 +90,60 @@ HDL project from the repository:
    You can also install
    `WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__
    (Windows Subsystem for Linux) which is both a UNIX-like environment and
-   a command-line interface for Microsoft Windows. 
+   a command-line interface for Microsoft Windows.
 
-   To be able to access the GUI, WSL2 is recommended. This can be done if you 
-   open PowerShell or Windows Command Prompt in Administrator mode. 
-   In the above link you can find the installation guide for WSL on Windows. 
+   To be able to access the GUI, WSL2 is recommended. This can be done if you
+   open PowerShell or Windows Command Prompt in Administrator mode.
+   In the above link you can find the installation guide for WSL on Windows.
 
    .. note::
 
       When installing WSL, the Ubuntu distribution will be installed by
       default
-      
+
    If not, after installing WSL, write in the terminal:
 
-   .. code-block:: 
+   .. code-block::
 
       >wsl --update
       >wsl --install -d ubuntu
 
    If you want to check the version for wsl, you can use the Windows
    Command Prompt command:
-   
-   .. code-block:: 
+
+   .. code-block::
 
       >wsl -l -v
         NAME      STATE           VERSION
       * Ubuntu    Running         2
-   
+
    If you want to check the version for WSL and Ubuntu, you can use the
    following commands in Ubuntu:
-   
+
    .. code-block::
-   
+
       :~$ uname -r
       5.15.90.1-microsoft-standard-WSL2
-   
+
       :~$ lsb_release -a
       No LSB modules are available.
       Distributor ID: Ubuntu
       Description:    Ubuntu 22.04.2 LTS
       Release:        22.04
       Codename:       jammy
-   
+
    If you want to become root, you can use the following command:
-   
+
    .. code-block:: bash
-   
+
       :~$ sudo -i
       [sudo] password for username:
       root@pc_name:~# exit
       logout
-   
+
    Here the paths will look like this if the tools will be installed in the
    Windows file system:
-   
+
    .. code-block:: bash
       :linenos:
 
@@ -156,10 +156,10 @@ HDL project from the repository:
       export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_le/bin
       export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/mnt/path_to/intelFPGA_pro/2x.x/quartus/bin
-   
-   Replace the **path_to** string with your path to the installation folder 
+
+   Replace the **path_to** string with your path to the installation folder
    and the **tools version** with the proper one!
-   
+
    .. warning::
 
       Before building any project, it is necessary to install
@@ -175,11 +175,11 @@ HDL project from the repository:
 
    For more information you can consult the following link:
    `WSLStorage <https://learn.microsoft.com/en-us/windows/wsl/filesystems#file-storage-and-performance-across-file-systems>`__.
-   
+
    Then the paths will look like this:
-   
+
    .. code-block:: bash
-      :linenos: 
+      :linenos:
 
       export PATH=$PATH:/opt/path_to/Xilinx/Vivado/202x.x/bin
       export PATH=$PATH:/opt/path_to/Xilinx/Vivado_HLS/202x.x/bin
@@ -190,14 +190,14 @@ HDL project from the repository:
       export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_le/bin
       export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/opt/path_to/intelFPGA_pro/2x.x/quartus/bin
-   
-   Replace the **path_to** string with your path to the installation folder 
+
+   Replace the **path_to** string with your path to the installation folder
    and the **tools version** with the proper one!
 
 .. dropdown:: For Linux environment
 
-   Because, in general, both **git** and **make** are native tools in Linux, 
-   you do not need to do any special setup. If you don't have these, install 
+   Because, in general, both **git** and **make** are native tools in Linux,
+   you do not need to do any special setup. If you don't have these, install
    them.
 
    Further more, you need to add your FPGA Design Tools installation
@@ -205,40 +205,40 @@ HDL project from the repository:
    run the **settings64.sh** script, which is located in your installation
    directory. Or you can add the required paths to your **~/.bashrc** file.
    For example:
-   
+
    .. code-block:: bash
       :linenos:
-   
+
       export PATH=$PATH:"/opt/Xilinx/Vivado/202x.x/bin"
       export PATH=$PATH:"/opt/Xilinx/Vitis/202x.x/bin"
       export PATH=$PATH:"/opt/intelFPGA_pro/2x.x/quartus/bin"
-   
-   Replace the **path_to** string with your path to the installation folder 
+
+   Replace the **path_to** string with your path to the installation folder
    and the **tools version** with the proper one!
 
-.. dropdown:: How to install Vivado on WSL 
-   
+.. dropdown:: How to install Vivado on WSL
+
    Installing the linux kit for Vivado can be done from Ubuntu:
 
    #. Go to the path where the installation kit for Vivado is located.
    #. Make it executable
-   
+
    .. code-block:: bash
-   
+
       :~$ chmod +x Xilinx_Vivado_installation_kit.bin
       :~$ ./Xilinx_Vivado_installation_kit.bin
-   
-   
+
+
    If you unzip the installation kit in Ubuntu, go to the Xilinx_Vivado
    installation kit and run .xsetup file. Make sure you have the following
    libraries installed:
-   
+
    .. code-block:: bash
-   
+
       :~$ sudo apt-get install locales && sudo localedef -i en_US -f UTF-8 en_US.UTF-8
       :~$ sudo ./installLibs.sh
       :~$ sudo apt-get install libxrender1 libxtst6 libxi6
-   
+
    You must create a **.bashrc** file with the paths corresponding to the
    version of Vivado installed.
 
@@ -390,9 +390,9 @@ Linux build. The 'sof' file is used to program the device.
    It can also happen that "**make**" get stuck when
    synthesizing some ips. This errors may appear because your device does
    not have enough RAM memory to build your FPGA design. This problem can
-   be solved if it is created a linux Swap file. 
+   be solved if it is created a linux Swap file.
 
-   You can find more information about what a swap file is at this link: 
+   You can find more information about what a swap file is at this link:
    `SwapFile <https://linuxize.com/post/create-a-linux-swap-file/>`__.
 
    Depending on the size of the project, more or less virtual memory must
@@ -563,10 +563,10 @@ from .hdf to .xsa.
    For some projects it is very possible to face the following error when you make a
    build:
 
-   .. warning:: 
+   .. warning::
 
       $RDI_PROG" "$@" crash" "Killed "$RDI_PROG" "$@"
-   
+
    This error may appear because your device does not have enough
    RAM memory to build your FPGA design. For example, the project
    AD-FMCDAQ3-EBZ with Virtex UltraScale+ VCU118 (XCVU9P device) requires
@@ -577,25 +577,25 @@ from .hdf to .xsa.
    find more information about what a swap file is in the next
    link:`SwapFile <https://linuxize.com/post/create-a-linux-swap-file/>`__
    To create a swap file you can use the following commands:
-   
+
    .. code-block:: bash
-   
+
       :~$ sudo fallocate -l "memory size (e.g 1G, 2G, 8G, etc.)" /swapfile
       :~$ sudo chmod 600 /swapfile
       :~$ sudo mkswap /swapfile
       :~$ sudo swapon /swapfile
-   
+
    If you want to make the change permanent:
-   
+
    .. code-block:: bash
-   
+
       # in /etc/fstab file type the command:
       /swapfile swap swap defaults 0 0
-   
+
    If you want to deactivate the swap memory:
-   
+
    .. code-block:: bash
-   
+
       :~$ sudo swapoff -v /swapfile
 
 
@@ -632,34 +632,34 @@ you must pay extra attention.
    * - Building library
      - :green:`Do nothing. Quartus only needs the _hw.tcl and QSys parses them
        whenever invoked`
-     - :red:`Need to build each and every library component. Vivado has its 
-       own way of identifying library components. This means you must build 
-       ALL the library components first before starting the project. You must 
+     - :red:`Need to build each and every library component. Vivado has its
+       own way of identifying library components. This means you must build
+       ALL the library components first before starting the project. You must
        re-run these scripts if there are any modifications`
    * - Building the project
      - Source the system_project.tcl file
-     - 
+     -
    * - Timing analysis
      - The projects are usually tested and should be free of timing errors.
-       There is no straightforward method to verify a timing pass (it usually 
-       involves writing a TCL proc by itself) on both the tools. The make 
-       build will fail and return with an error if the timing is not met 
+       There is no straightforward method to verify a timing pass (it usually
+       involves writing a TCL proc by itself) on both the tools. The make
+       build will fail and return with an error if the timing is not met
        (on both tools).
      -
    * - SDK (Microblaze/Nios)
      - Use SOPCINFO and SOF files
      - Use XSA file
    * - SDK (ARM/FPGA combo)
-     - :red:`Not so well-thought procedure. Need to run different tools, 
-       manually edit build files etc. The steps involved are running 
-       bsp-editor, running make, modifying linker scripts, makefiles and 
+     - :red:`Not so well-thought procedure. Need to run different tools,
+       manually edit build files etc. The steps involved are running
+       bsp-editor, running make, modifying linker scripts, makefiles and
        sources, importing to SDK`
      - :green:`Same procedure as Microblaze`
    * - Upgrading/Version changes (non-ADI cores)
-     - :green:`Quartus automatically updates the cores. Almost hassle-free for 
+     - :green:`Quartus automatically updates the cores. Almost hassle-free for
        most of the cores`
-     - :red:`Vivado does not automatically update the revisions in TCL flow 
-       (it does on GUI). It will stop at the first version mismatch (a rather 
+     - :red:`Vivado does not automatically update the revisions in TCL flow
+       (it does on GUI). It will stop at the first version mismatch (a rather
        slow and frustrating process)`
 
 
@@ -679,7 +679,7 @@ to use an unsupported version of tools.
 
 .. note::
 
-   There are several ways to find out which tool version you should use. 
+   There are several ways to find out which tool version you should use.
    The easiest way is to check the `release
    notes <https://github.com/analogdevicesinc/hdl/releases>`__. You may
    also check out or browse the desired branch, and verify the tool version
@@ -849,9 +849,9 @@ ReadMe.txt file from boot partition.
 
 .. dropdown:: How to build the boot image BOOT.BIN in WSL
 
-   After obtaining .xsa file, you must be sure that you have done source for 
-   Vivado and Vitis. To create boot.bin is recommended to run 
-   build_boot_bin.sh in terminal.To do this, the file can be called in the 
+   After obtaining .xsa file, you must be sure that you have done source for
+   Vivado and Vitis. To create boot.bin is recommended to run
+   build_boot_bin.sh in terminal.To do this, the file can be called in the
    following manner:
 
    .. code-block:: bash
@@ -977,8 +977,8 @@ not supported for the current part.
 .. code-block::
 
    ERROR: [Common 17-39] 'create_bd_cell' failed due to earlier errors.
-        while executing 
-   "create_bd_cell -type ip -vlnv analog.com:user:axi_clkgen:1.0 axi_hdmi_clkgen" invoked from within 
+        while executing
+   "create_bd_cell -type ip -vlnv analog.com:user:axi_clkgen:1.0 axi_hdmi_clkgen" invoked from within
    "set axi_hdmi_clkgen [create_bd_cell -type ip -vlnv analog.com:user:axi_clkgen:1.0 axi_hdmi_clkgen]" (file "../../../projects/common/zc706/zc706_system_bd.tcl" line 57)</fc>
 
 You haven't generated the library component or have the wrong user IP
