@@ -3,13 +3,16 @@
 Build HDL
 ===============================================================================
 
-Please note that ADI only provides the source files necessary to create
+**Please note that ADI only provides the source files necessary to create
 and build the designs. That means the burden of modifying and building
-these projects is on you. The build process, obviously, depends on
-certain software and tools. There are many ways you could use this
-software and tools. In other words, how you want to build these projects
-is entirely up to you. The only catch is that if you run into problems,
-you must use basic diligence in resolving it yourself.
+these projects is on you.**
+
+The build process, obviously, depends on certain software and tools. 
+There are many ways you could use this software and tools. 
+
+In other words, how you want to build these projects is entirely up to you. 
+The only catch is that if you run into problems, you must use basic diligence 
+in resolving it yourself.
 
 Here we are giving you a quick rundown on how we build things. That is,
 the steps below are NOT a recommendation, but a suggestion. We use
@@ -20,23 +23,24 @@ these.**
 Setup and check your environment
 -------------------------------------------------------------------------------
 
-This section contains a guide about how to setup your environment in
-order to build any HDL project from the repository.
+This section contains a guide about how to setup your environment to build any 
+HDL project from the repository:
 
-#. Install the required FPGA design suite. You can find information
-   about the proper version in the `release
-   notes <https://github.com/analogdevicesinc/hdl/releases>`__. Make
-   sure that you're always using the latest release.
+#. Install the required FPGA design suite. We use `AMD Xilinx Vivado 
+   <https://www.xilinx.com/support/download.html>`__ and `Intel Quartus Pro 
+   and Standard <https://www.intel.com/content/www/us/en/products/details/fpga/development-tools/quartus-prime/resource.html>`__. 
+   You can find information about the proper version in our 
+   `release notes <https://github.com/analogdevicesinc/hdl/releases>`__. 
+   Make sure that you're always using the latest release.
 #. The proper Vivado/Quartus version can be found in:
 
-   -  Starting with the ``hdl_2021_r1`` release branch:
-      `adi_env.tcl <https://github.com/analogdevicesinc/hdl/blob/master/scripts/adi_env.tcl>`__
+   -  Starting with ``hdl_2021_r1`` release branch:
+      `hdl/scripts/adi_env.tcl <https://github.com/analogdevicesinc/hdl/blob/master/scripts/adi_env.tcl>`__
    -  For ``hdl_2019_r2`` and older:
       *hdl/projects/scripts/adi_project_xilinx.tcl* for Vivado, and
       *hdl/projects/scripts/adi_project_intel.tcl* for Quartus.
 
-#. Download the tools from the following links // (it will take a lot of
-   time and space):
+#. Download the tools from the following links:
 
    -  `Xilinx tools <https://www.xilinx.com/support/download.html>`__ (make sure you're
       downloading the proper installer! For full installation, it is
@@ -58,8 +62,8 @@ order to build any HDL project from the repository.
    `Cygwin <https://www.cygwin.com/>`__, which is a UNIX-like environment
    and command-line interface for Microsoft Windows. You do not need to
    install any special package, other than **git** and **make**.
-   
-   After you installed Cygwin, you need to add your FPGA Design Tools
+
+   After you have installed Cygwin, you need to add your FPGA Design Tools
    installation directory to your PATH environment variable. You can do
    that by modifying your **~/.bashrc** file, by adding the following lines
    **changed accordingly to your installation directories**. For example:
@@ -77,8 +81,8 @@ order to build any HDL project from the repository.
       export PATH=$PATH:/cygdrive/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/cygdrive/path_to/intelFPGA_pro/2x.x/quartus/bin
    
-   Replace the **path_to** string with your path to the
-   installation folder and the **tools version** with the proper one!
+   Replace the **path_to** string with your path to the installation folder 
+   and the **tools version** with the proper one!
 
 
 .. dropdown:: For Windows environment with WSL
@@ -86,20 +90,20 @@ order to build any HDL project from the repository.
    You can also install
    `WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__
    (Windows Subsystem for Linux) which is both a UNIX-like environment and
-   a command-line interface for Microsoft Windows. In order to be able to
-   access the GUI, WSL2 is recommended. This can be done if we open
-   PowerShell or Windows Command Prompt in Administrator mode. In the link
-   above you can find the installation guide for wsl on windows. 
+   a command-line interface for Microsoft Windows. 
+
+   To be able to access the GUI, WSL2 is recommended. This can be done if you 
+   open PowerShell or Windows Command Prompt in Administrator mode. 
+   In the above link you can find the installation guide for WSL on Windows. 
 
    .. note::
 
-      When installing wsl, the Ubuntu distribution will be installed by
+      When installing WSL, the Ubuntu distribution will be installed by
       default
       
-   If not, after installing wsl, write in the terminal:
+   If not, after installing WSL, write in the terminal:
 
    .. code-block:: 
-      :linenos: 
 
       >wsl --update
       >wsl --install -d ubuntu
@@ -108,17 +112,15 @@ order to build any HDL project from the repository.
    Command Prompt command:
    
    .. code-block:: 
-      :linenos: 
 
       >wsl -l -v
         NAME      STATE           VERSION
       * Ubuntu    Running         2
    
-   If you want to check the version for wsl and Ubuntu, you can use the
+   If you want to check the version for WSL and Ubuntu, you can use the
    following commands in Ubuntu:
    
    .. code-block::
-      :linenos: 
    
       :~$ uname -r
       5.15.90.1-microsoft-standard-WSL2
@@ -133,7 +135,6 @@ order to build any HDL project from the repository.
    If you want to become root, you can use the following command:
    
    .. code-block:: bash
-      :linenos: 
    
       :~$ sudo -i
       [sudo] password for username:
@@ -156,8 +157,8 @@ order to build any HDL project from the repository.
       export PATH=$PATH:/mnt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/mnt/path_to/intelFPGA_pro/2x.x/quartus/bin
    
-   Replace the **path_to** string with your path to the
-   installation folder and the **tools version** with the proper one!
+   Replace the **path_to** string with your path to the installation folder 
+   and the **tools version** with the proper one!
    
    .. warning::
 
@@ -167,7 +168,7 @@ order to build any HDL project from the repository.
       and Quartus because on the Ubuntu distribution on
       `WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__ you
       cannot run projects on the Windows version of them. When you have to
-      choose the installation path, choose the location where wsl is installed
+      choose the installation path, choose the location where WSL is installed
       (:code:`\\\\wsl.localhost\\Ubuntu\\opt`). Also, to get the best performance, you
       must clone your hdl repository in the WSL file system. For example:
       :code:`\\\\wsl.localhost\\Ubuntu\\home\\username\\hdl`
@@ -190,8 +191,8 @@ order to build any HDL project from the repository.
       export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
       export PATH=$PATH:/opt/path_to/intelFPGA_pro/2x.x/quartus/bin
    
-   Replace the **path_to** string with your path to the
-   installation folder and the **tools version** with the proper one!
+   Replace the **path_to** string with your path to the installation folder 
+   and the **tools version** with the proper one!
 
 .. dropdown:: For Linux environment
 
@@ -212,8 +213,8 @@ order to build any HDL project from the repository.
       export PATH=$PATH:"/opt/Xilinx/Vitis/202x.x/bin"
       export PATH=$PATH:"/opt/intelFPGA_pro/2x.x/quartus/bin"
    
-   Replace the **path_to** string with your path to the
-   installation folder and the **tools version** with the proper one!
+   Replace the **path_to** string with your path to the installation folder 
+   and the **tools version** with the proper one!
 
 .. dropdown:: How to install Vivado on WSL 
    
@@ -259,7 +260,7 @@ Setup the HDL repository
 If you completed the above steps, next thing to do is clone the
 repository. This is the best method to get the sources. Here, I am
 cloning the repository inside a directory called **adi**. Please refer
-to the `Git Repository </git>`__ section for more details.
+to the :ref:`git_repository` section for more details.
 
 .. code-block:: bash
 
@@ -384,18 +385,22 @@ Linux build. The 'sof' file is used to program the device.
       Current module quartus_fit was
       unexpectedly terminated by signal 9. This may be because some system
       resource has been exhausted, or quartus_fit performed an illegal
-      operation. </note> It can also happen that "**make**" get stuck when
-      synthesizing some ips. This errors may appear because your device does
-      not have enough RAM memory to build your FPGA design. This problem can
-      be solved if it is created a linux Swap file. You can find more
-      information about what a swap file is in the next
-      link:`SwapFile <https://linuxize.com/post/create-a-linux-swap-file/>`__.
-      Depending on the size of the project, more or less virtual memory must
-      be allocated. If you type in the search bar **System Information**, you
-      can see Total Physical Memory and Total Virtual Memory of your system.
-      For example for the AD9213 with s10Soc project, it was necessary to
-      allocate 15 GB of virtual memory, to be able to make a build for the
-      project. To create a swap file you can use the following commands:
+      operation.
+
+   It can also happen that "**make**" get stuck when
+   synthesizing some ips. This errors may appear because your device does
+   not have enough RAM memory to build your FPGA design. This problem can
+   be solved if it is created a linux Swap file. 
+
+   You can find more information about what a swap file is at this link: 
+   `SwapFile <https://linuxize.com/post/create-a-linux-swap-file/>`__.
+
+   Depending on the size of the project, more or less virtual memory must
+   be allocated. If you type in the search bar **System Information**, you
+   can see Total Physical Memory and Total Virtual Memory of your system.
+   For example for the AD9213 with s10Soc project, it was necessary to
+   allocate 15 GB of virtual memory, to be able to make a build for the
+   project. To create a swap file you can use the following commands:
 
    .. code-block:: bash
 
