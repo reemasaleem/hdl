@@ -163,8 +163,8 @@ HDL project from the repository:
    .. warning::
 
       Before building any project, it is necessary to install
-      the Linux version for Vivado (see `How to install Vivado on WSL
-      section`)
+      the Linux version for Vivado (see ``How to install Vivado on WSL
+      section``)
       and Quartus because on the Ubuntu distribution on
       `WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__ you
       cannot run projects on the Windows version of them. When you have to
@@ -307,9 +307,9 @@ Building the projects
 
    Before building any project, you must have the environment prepared and the
    proper tools. See
-   `Tools </resources/fpga/docs/build#tools_and_tool_versions>`__ section
+   `Tools`_ section
    on what you need to download and
-   `Environment </resources/fpga/docs/build#environment>`__ section on how
+   `Environment`_ section on how
    to set-up your environment.
 
 Building an Intel project
@@ -676,14 +676,15 @@ Tool versions
 -------------------------------------------------------------------------------
 
 Though the ADI libraries work across different versions of the tools,
-the projects we provide may not. The Xilinx and Intel IPs may or may not
+the projects we provide **may not**. The Xilinx and Intel IPs may or may not
 work across versions. We can only assure you that they are tested and
-works only for the versions we provide. The projects are usually
-upgraded to the latest tools after they are publicly released. The
-information about the version of the used tools can be found in the
-`README.md <https://github.com/analogdevicesinc/hdl/blob/master/README.md>`__
-file of each branch. The script, which builds the project always double
-check the used tool version, and notifies the user, if he or she trying
+**work only for the versions we specify**.
+
+The projects are usually upgraded to the latest tools after they are
+publicly released. The used tool versions can be found in the
+`release notes <https://github.com/analogdevicesinc/hdl/releases>`__
+for each branch. The script, which builds the project always double
+checks the used tools version, and notifies the user if he or she is trying
 to use an unsupported version of tools.
 
 .. note::
@@ -702,20 +703,22 @@ Environment
 ===============================================================================
 
 As said above, our recommended build flow is to use **make** and the
-command line versions of the tools. This method highly facilitates our
+command line version of the tools. This method facilitates our
 overall build and release process as it automatically builds the
 required libraries and dependencies.
 
 Linux environment setup
 -------------------------------------------------------------------------------
 
-All major distributions should have 'make' installed by default. If not
-if you try the command it should tell you how to install them with the
-package name. You may have to install 'git' (sudo apt-get install
-git)and the Intel and Xilinx tools. These tools come with certain
-'settings\*.sh' scripts that you may source in your '.bashrc' file to
+All major distributions should have ``make``  installed by default. If not,
+if you try the command, it should tell you how to install it with the
+package name.
+
+You may have to install ``git`` (sudo apt-get install git)
+and the Intel and Xilinx tools. These tools come with certain
+``settings*.sh`` scripts that you may source in your ``.bashrc`` file to
 set up the environment. You may also do this manually (for better or
-worse), the following snippet is from a **.bashrc** file. Please note
+worse); the following snippet is from a ``.bashrc`` file. Please note
 that unless you are an expert at manipulating these things, leave it to
 the tools to set up the environment.
 
@@ -729,7 +732,7 @@ Windows environment setup
 
 The best option on Windows is to use
 `Cygwin <https://www.cygwin.com>`__. When installing it, select the
-'make' and 'git' packages. The manual changes to your '.bashrc' do a lot
+``make`` and ``git`` packages. The manual changes to your ``.bashrc`` do a lot
 look like that of the Linux environment.
 
 .. code-block:: bash
@@ -739,21 +742,22 @@ look like that of the Linux environment.
 
 A very good alternative to Cygwin is
 `WSL <https://learn.microsoft.com/en-us/windows/wsl/install/>`__. The
-manual changes to your '.bashrc' looks like:
+manual changes to your ``.bashrc`` should look like:
 
 .. code-block:: bash
 
    export PATH=$PATH:/opt/path_to/Vivado/202x.x/bin:/opt/Vitis/202x.x/bin
    export PATH=$PATH:/opt/path_to/quartus/bin
 
-If you do not want to install Cygwin, there may still be some
-alternatives. There are 'make' alternatives for 'windows command
+If you do not want to install Cygwin, there might still be some
+alternative. There are ``make`` alternatives for 'windows command
 prompt', minimalist GNU for Windows ('MinGW'), or the 'cygwin'
-variations installed by the tools itself. Some of these may not be fully
-functional with our scripts and/or projects. If you are an Intel user,
-the "Nios II Command Shell" do support make. If you are a Xilinx user,
-use the 'gnuwin' installed as part of the SDK, usually
-C:\\Xilinx\\Vitis\\202x.x\\gnuwin\\bin.
+variations installed by the tools itself.
+
+Some of these may not be fully functional with our scripts and/or projects.
+If you are an Intel user, the "Nios II Command Shell" does support make.
+If you are a Xilinx user, use the 'gnuwin' installed as part of the SDK,
+usually at ``C:\Xilinx\Vitis\202x.x\gnuwin\bin``.
 
 Make: supported targets
 ===============================================================================
@@ -765,11 +769,11 @@ Make: supported targets
    directives ('rules') about how to compile and/or link a program
    ('targets').
 
-In general, always run 'make' within a project folder such as
+In general, always run ``make`` within a project folder such as
 'hdl/projects/daq2/a10soc' or 'hdl/projects/daq2/zc706'. There should
 not be a need for you to run 'make' inside the library or root folders.
-The 'make' framework passes the top level 'targets' to any sub-makes
-inside its sub-folders. What this means is that if you run 'make' inside
+The ``make`` framework passes the top level 'targets' to any sub-makes
+inside its sub-folders. What this means is that if you run ``make`` inside
 'hdl/projects/daq2', it builds all the carriers ('kc705', 'a10soc',
 'kcu105', 'zc706' to 'zcu102') which is an overkill.
 
@@ -826,7 +830,7 @@ Preparing the SD card
 ===============================================================================
 
 Firstly, you have to check this
-`tutorial </resources/tools-software/linux-software/zynq_images/windows_hosts>`__
+`tutorial <https://wiki.analog.com/resources/tools-software/linux-software/zynq_images/windows_hosts>`__
 on how to put the Linux image on your SD card. Once you are done with
 that, you can go on with the following steps.
 
@@ -845,16 +849,15 @@ BOOT.BIN. Copy them to be in the root directory.
 #. u-boot.elf
 #. and if you're using ZCU102, then bl31.elf and pmu.elf
 
-Next, what your project needs, is the **uImage**\ (for zynq based
-carriers), **Image** (for zynq ultrascale - ZCU102 and adrv9009-zu11eg
-carriers) or zImage (for Intel based carriers) file that you will find
-in the **zynq-common / zynqmp-common / socfpga_arria10_common /
-socfpga_cyclone5_common** on your BOOT partition. Copy this file also in
+Next, what your project needs, is the ``uImage`` (for Zynq based
+carriers) or ``Image`` (for Zynq UltraScale - ZCU102 and ADRV9009-ZU11EG
+carriers) or ``zImage`` (for Intel based carriers) file that you will find
+in the ``zynq-common`` or ``zynqmp-common``, ``socfpga_arria10_common`` or
+``socfpga_cyclone5_common`` on your ``boot`` partition. Copy this file also in
 the root directory of your project.
 
-More info on how to generate this files you will find in the
-`References </resources/fpga/docs/build#References>`__ section or on
-ReadMe.txt file from boot partition.
+More info on how to generate this file you will find in the
+`References`_ section or in the ReadMe.txt file from ``boot`` partition.
 
 .. dropdown:: How to build the boot image BOOT.BIN in WSL
 
@@ -960,11 +963,11 @@ References
 ===============================================================================
 
 -  `How to build the Zynq boot image
-   BOOT.BIN <resources/tools-software/linux-software/build-the-zynq-boot-image>`__
+   BOOT.BIN <https://wiki.analog.com/resources/tools-software/linux-software/build-the-zynq-boot-image>`__
 -  `How to build the ZynqMP boot image
-   BOOT.BIN <resources/tools-software/linux-software/build-the-zynqmp-boot-image>`__
+   BOOT.BIN <https://wiki.analog.com/resources/tools-software/linux-software/build-the-zynqmp-boot-image>`__
 -  `Building the ADI Linux
-   kernel <resources/tools-software/linux-drivers-all>`__
+   kernel <https://wiki.analog.com/resources/tools-software/linux-drivers-all>`__
 
 Errors, Warnings and Notes
 ===============================================================================
@@ -975,20 +978,18 @@ In most cases, you may see 'hacked-in' debugging 'printf' sort of
 messages (Xilinx notoriously ranks high in this regard). So you are
 going to see a lot of 'warnings' and some 'critical-warnings' (critical
 to what could be hard to answer). Here are some of the commonly asked
-EngineerZone questions and its explanations.
+EngineerZone questions and their explanations.
 
 Xilinx: Vivado
 -------------------------------------------------------------------------------
 
-<fc #ffa500> ERROR: [BD 5-216] VLNV <analog.com:user:axi_clkgen:1.0> is
-not supported for the current part.
-
 .. code-block::
 
-   ERROR: [Common 17-39] 'create_bd_cell' failed due to earlier errors.
-        while executing
+   ERROR: [BD 5-216] VLNV <analog.com:user:axi_clkgen:1.0> is not supported for the current part.
+
+   ERROR: [Common 17-39] 'create_bd_cell' failed due to earlier errors while executing
    "create_bd_cell -type ip -vlnv analog.com:user:axi_clkgen:1.0 axi_hdmi_clkgen" invoked from within
-   "set axi_hdmi_clkgen [create_bd_cell -type ip -vlnv analog.com:user:axi_clkgen:1.0 axi_hdmi_clkgen]" (file "../../../projects/common/zc706/zc706_system_bd.tcl" line 57)</fc>
+   "set axi_hdmi_clkgen [create_bd_cell -type ip -vlnv analog.com:user:axi_clkgen:1.0 axi_hdmi_clkgen]" (file "../../../projects/common/zc706/zc706_system_bd.tcl" line 57)
 
 You haven't generated the library component or have the wrong user IP
 repository setting. If you were using the GUI flow, now is a good time
@@ -996,14 +997,12 @@ to evaluate the 'make' flow.
 
 .. code-block::
 
-   CRITICAL WARNING: [IP_Flow 19-459] IP file
-   'C:/Git/hdl/library/common/ad_pnmon.v' appears to be outside of the
+   CRITICAL WARNING: [IP_Flow 19-459] IP file 'C:/Git/hdl/library/common/ad_pnmon.v' appears to be outside of the
    project area 'C:/Git/hdl/library/axi_ad9467'. You can use the
-   ipx::package_project -import_files option to copy remote files into the
-   IP directory.
+   ipx::package_project -import_files option to copy remote files into the IP directory.
 
 These warnings appear because the libraries are using common modules
-which are located under the **./library/common/**. These warnings can be
+which are located under the ``./library/common/``. These warnings can be
 ignored, they won't affect the functionality of the IP or the project.
 However, you may not be able to 'archive' these projects. The irony is
 that it does copy these files to the project area, but ignores them.
@@ -1011,38 +1010,4 @@ that it does copy these files to the project area, but ignores them.
 .. |image1| image:: /resources/fpga/docs/hdl/hdl_cygwin_4.png
    :width: 800px
 .. |image2| image:: /resources/fpga/docs/hdl/hdl_cygwin_12.png
-   :width: 800px
-.. |image3| image:: /resources/fpga/docs/hdl/hdl_cygwin_13.png
-   :width: 800px
-.. |image4| image:: /resources/fpga/docs/hdl/hdl_cygwin_15.png
-   :width: 800px
-.. |image5| image:: /resources/fpga/docs/hdl/hdl_cygwin_14.png
-   :width: 800px
-.. |image6| image:: /resources/fpga/docs/hdl/hdl_cygwin_5.png
-   :width: 800px
-.. |image7| image:: /resources/fpga/docs/hdl/hdl_cygwin_6.png
-   :width: 800px
-.. |image8| image:: /resources/fpga/docs/hdl/hdl_cygwin_7.png
-   :width: 800px
-.. |image9| image:: /resources/fpga/docs/hdl/hdl_cygwin_8.png
-   :width: 800px
-.. |image10| image:: /resources/fpga/docs/hdl/hdl_cygwin_9.png
-   :width: 800px
-.. |image11| image:: /resources/fpga/docs/hdl/hdl_cygwin_10.png
-   :width: 800px
-.. |image12| image:: /resources/fpga/docs/hdl/hdl_cygwin_11.png
-   :width: 800px
-.. |image13| image:: /resources/fpga/docs/hdl/altera_qsys_1.jpg
-   :width: 800px
-.. |image14| image:: /resources/fpga/docs/hdl/altera_quartus_1.jpg
-   :width: 800px
-.. |image15| image:: /resources/fpga/docs/hdl/altera_quartus_2.jpg
-   :width: 800px
-.. |image16| image:: /resources/fpga/docs/hdl/vivado_library_1.jpg
-   :width: 800px
-.. |image17| image:: /resources/fpga/docs/hdl/vivado_library_2.jpg
-   :width: 800px
-.. |image18| image:: /resources/fpga/docs/hdl/vivado_projects_1.jpg
-   :width: 800px
-.. |image19| image:: /resources/fpga/docs/hdl/vivado_projects_2.jpg
    :width: 800px
