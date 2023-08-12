@@ -82,6 +82,8 @@ ad_connect util_ad9361_divclk_sel_concat/dout util_ad9361_divclk_sel/Op1
 ad_ip_instance util_clkdiv util_ad9361_divclk
 ad_connect util_ad9361_divclk_sel/Res util_ad9361_divclk/clk_sel
 ad_connect axi_ad9361/l_clk util_ad9361_divclk/clk
+ad_connect ad9361_divclk util_ad9361_divclk/clk_out
+set ad9361_divclk [get_bd_nets ad9361_divclk]
 
 # resets at divided clock
 
@@ -132,24 +134,25 @@ for {set i 0} {$i < 4} {incr i} {
   ad_connect util_ad9361_adc_fifo/dout_data_$i util_ad9361_adc_pack/fifo_wr_data_$i
 }
 
-# adc-path dma
+# adc-path Xilinx DMA
+create_bd_cell -type ip -vlnv xilinx.com:ip:axi_dma:7.1 axi_ad9361_adc_dma
+set_property -dict [list \
+  CONFIG.c_include_mm2s {0} \
+  CONFIG.c_include_s2mm {1} \
+  CONFIG.c_s_axis_s2mm_tdata_width {64} \
+  CONFIG.c_m_axi_s2mm_data_width {64} \
+  CONFIG.c_sg_length_width {24} \
+  CONFIG.c_s2mm_burst_size {16} \
+  CONFIG.c_sg_include_stscntrl_strm {0} \
+] [get_bd_cells axi_ad9361_adc_dma]
 
-ad_ip_instance axi_dmac axi_ad9361_adc_dma
-ad_ip_parameter axi_ad9361_adc_dma CONFIG.DMA_TYPE_SRC 2
-ad_ip_parameter axi_ad9361_adc_dma CONFIG.DMA_TYPE_DEST 0
-ad_ip_parameter axi_ad9361_adc_dma CONFIG.CYCLIC 0
-ad_ip_parameter axi_ad9361_adc_dma CONFIG.SYNC_TRANSFER_START 1
-ad_ip_parameter axi_ad9361_adc_dma CONFIG.AXI_SLICE_SRC 0
-ad_ip_parameter axi_ad9361_adc_dma CONFIG.AXI_SLICE_DEST 0
-ad_ip_parameter axi_ad9361_adc_dma CONFIG.DMA_2D_TRANSFER 0
-ad_ip_parameter axi_ad9361_adc_dma CONFIG.DMA_SG_TRANSFER 1
-ad_ip_parameter axi_ad9361_adc_dma CONFIG.DMA_DATA_WIDTH_SRC 64
-ad_ip_parameter axi_ad9361_adc_dma CONFIG.DMA_DATA_WIDTH_SG 64
-
-ad_connect util_ad9361_divclk/clk_out axi_ad9361_adc_dma/fifo_wr_clk
-ad_connect util_ad9361_adc_pack/packed_fifo_wr axi_ad9361_adc_dma/fifo_wr
-ad_connect $sys_cpu_resetn axi_ad9361_adc_dma/m_dest_axi_aresetn
-ad_connect $sys_cpu_resetn axi_ad9361_adc_dma/m_sg_axi_aresetn
+ad_connect axi_ad9361_adc_dma/s_axis_s2mm_tdata util_ad9361_adc_pack/packed_fifo_wr_data
+ad_connect axi_ad9361_adc_dma/s_axis_s2mm_tkeep VCC
+ad_connect axi_ad9361_adc_dma/s_axis_s2mm_tlast GND
+ad_connect axi_ad9361_adc_dma/s_axis_s2mm_tvalid util_ad9361_adc_pack/packed_fifo_wr_en
+ad_connect axi_ad9361_adc_dma/axi_resetn $sys_cpu_resetn
+ad_connect axi_ad9361_adc_dma/m_axi_sg_aclk $ad9361_divclk
+ad_connect axi_ad9361_adc_dma/m_axi_s2mm_aclk $ad9361_divclk
 
 # dac-path rfifo
 
@@ -194,40 +197,38 @@ for {set i 0} {$i < 4} {incr i} {
   ad_connect util_ad9361_dac_upack/fifo_rd_data_$i axi_ad9361_dac_fifo/din_data_$i
 }
 
-# dac-path dma
+# dac-path Xilinx DMA
+create_bd_cell -type ip -vlnv xilinx.com:ip:axi_dma:7.1 axi_ad9361_dac_dma
+set_property -dict [list \
+  CONFIG.c_include_mm2s {1} \
+  CONFIG.c_include_s2mm {0} \
+  CONFIG.c_m_axi_mm2s_data_width {64} \
+  CONFIG.c_m_axis_mm2s_tdata_width {64} \
+  CONFIG.c_sg_length_width {24} \
+  CONFIG.c_mm2s_burst_size {16} \
+  CONFIG.c_sg_include_stscntrl_strm {0} \
+] [get_bd_cells axi_ad9361_dac_dma]
 
-ad_ip_instance axi_dmac axi_ad9361_dac_dma
-ad_ip_parameter axi_ad9361_dac_dma CONFIG.DMA_TYPE_SRC 0
-ad_ip_parameter axi_ad9361_dac_dma CONFIG.DMA_TYPE_DEST 1
-ad_ip_parameter axi_ad9361_dac_dma CONFIG.CYCLIC 1
-ad_ip_parameter axi_ad9361_dac_dma CONFIG.AXI_SLICE_SRC 0
-ad_ip_parameter axi_ad9361_dac_dma CONFIG.AXI_SLICE_DEST 0
-ad_ip_parameter axi_ad9361_dac_dma CONFIG.DMA_2D_TRANSFER 0
-ad_ip_parameter axi_ad9361_dac_dma CONFIG.DMA_SG_TRANSFER 1
-ad_ip_parameter axi_ad9361_dac_dma CONFIG.DMA_DATA_WIDTH_DEST 64
-ad_ip_parameter axi_ad9361_dac_dma CONFIG.DMA_DATA_WIDTH_SG 64
-
-ad_connect util_ad9361_divclk/clk_out axi_ad9361_dac_dma/m_axis_aclk
-ad_connect axi_ad9361_dac_dma/m_axis util_ad9361_dac_upack/s_axis
-
-ad_connect $sys_cpu_resetn axi_ad9361_dac_dma/m_src_axi_aresetn
-ad_connect $sys_cpu_resetn axi_ad9361_dac_dma/m_sg_axi_aresetn
+ad_connect axi_ad9361_dac_dma/m_axis_mm2s util_ad9361_dac_upack/s_axis
+ad_connect axi_ad9361_dac_dma/axi_resetn $sys_cpu_resetn
+ad_connect axi_ad9361_dac_dma/m_axi_sg_aclk $ad9361_divclk
+ad_connect axi_ad9361_dac_dma/m_axi_mm2s_aclk $ad9361_divclk
 
 # interconnects
 
 ad_cpu_interconnect 0x79020000 axi_ad9361
 ad_cpu_interconnect 0x7C400000 axi_ad9361_adc_dma
 ad_cpu_interconnect 0x7C420000 axi_ad9361_dac_dma
-ad_mem_hp1_interconnect $sys_cpu_clk sys_ps7/S_AXI_HP1
-ad_mem_hp1_interconnect $sys_cpu_clk axi_ad9361_adc_dma/m_dest_axi
-ad_mem_hp2_interconnect $sys_cpu_clk sys_ps7/S_AXI_HP2
-ad_mem_hp2_interconnect $sys_cpu_clk axi_ad9361_dac_dma/m_src_axi
+ad_mem_hp1_interconnect $ad9361_divclk sys_ps7/S_AXI_HP1
+ad_mem_hp1_interconnect $ad9361_divclk axi_ad9361_adc_dma/m_axi_sg
+ad_mem_hp1_interconnect $ad9361_divclk axi_ad9361_adc_dma/m_axi_s2mm
+ad_mem_hp2_interconnect $ad9361_divclk sys_ps7/S_AXI_HP2
+ad_mem_hp2_interconnect $ad9361_divclk axi_ad9361_dac_dma/m_axi_sg
+ad_mem_hp2_interconnect $ad9361_divclk axi_ad9361_dac_dma/m_axi_mm2s
 
-ad_mem_hp2_interconnect $sys_cpu_clk axi_ad9361_dac_dma/m_sg_axi
-ad_mem_hp1_interconnect $sys_cpu_clk axi_ad9361_adc_dma/m_sg_axi
 
 # interrupts
 
-ad_cpu_interrupt ps-13 mb-12 axi_ad9361_adc_dma/irq
-ad_cpu_interrupt ps-12 mb-13 axi_ad9361_dac_dma/irq
+ad_cpu_interrupt ps-13 mb-12 axi_ad9361_adc_dma/s2mm_introut
+ad_cpu_interrupt ps-12 mb-13 axi_ad9361_dac_dma/mm2s_introut
 
