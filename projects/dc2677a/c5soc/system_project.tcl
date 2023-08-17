@@ -26,6 +26,8 @@ adi_project dc2677a_c5soc [list \
 
 source $ad_hdl_dir/projects/common/c5soc/c5soc_system_assign.tcl
 
+set_global_assignment -name VERILOG_FILE -remove system_top.v
+
 # ltc235x interface
 
 set_location_assignment PIN_K12 -to lvds_cmos_n ; # lvds_cmos_n 54 lvds_rxp1
@@ -36,6 +38,9 @@ set_location_assignment PIN_G11 -to pd          ; # pd 50 lvds_rxn0
 
 if {$LVDS_CMOS_N == 1} {
   # lvds
+
+  set_global_assignment -name VERILOG_FILE system_top_lvds.v
+  set_global_assignment -name TOP_LEVEL_ENTITY system_top_lvds
 
   set_instance_assignment -name IO_STANDARD "2.5V" -to lvds_cmos_n
   set_instance_assignment -name IO_STANDARD "2.5V" -to cnv
@@ -61,6 +66,9 @@ if {$LVDS_CMOS_N == 1} {
   set_instance_assignment -name INPUT_TERMINATION DIFFERENTIAL -to sdo_p
 } else {
   # cmos
+
+  set_global_assignment -name VERILOG_FILE system_top_cmos.v
+  set_global_assignment -name TOP_LEVEL_ENTITY system_top_cmos
 
   set_instance_assignment -name IO_STANDARD "3.3V LVCMOS" -to lvds_cmos_n
   set_instance_assignment -name IO_STANDARD "3.3V LVCMOS" -to cnv

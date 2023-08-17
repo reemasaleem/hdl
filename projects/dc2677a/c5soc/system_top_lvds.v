@@ -35,7 +35,7 @@
 
 `timescale 1ns/100ps
 
-module system_top (
+module system_top_lvds (
 
   // clock and resets
   input           sys_clk,
@@ -115,11 +115,6 @@ module system_top (
   input           busy,
   output          pd,
   output          cs_n,
-
-  output          sdi,
-  output          scki,
-  input           scko,
-  input   [ 7:0]  sdo,
 
   output          sdi_p,
   output          sdi_n,
@@ -235,10 +230,6 @@ module system_top (
     .axi_ltc235x_device_if_lvds_cmos_n (lvds_cmos_n),
     .axi_ltc235x_device_if_busy (busy),
     .axi_ltc235x_cnv_if_if_pwm(cnv),
-    .axi_ltc235x_device_if_sdo (sdo),
-    .axi_ltc235x_device_if_scki (scki),
-    .axi_ltc235x_device_if_scko (scko),
-    .axi_ltc235x_device_if_sdi (sdi),
     .axi_ltc235x_device_if_sdo_p (sdo_p),
     .axi_ltc235x_device_if_sdo_n (sdo_n),
     .axi_ltc235x_device_if_scki_p (scki_p),
