@@ -56,20 +56,24 @@ proc axi_ltc235x_elab {} {
   # common
   add_interface_port device_if busy busy Input 1
   add_interface_port device_if lvds_cmos_n lvds_cmos_n Output 1
-  # cmos
-  add_interface_port device_if scki scki Output 1
-  add_interface_port device_if scko scko Input 1
-  add_interface_port device_if sdi sdi Output 1
-  add_interface_port device_if sdo sdo Input 8
-  # lvds
-  add_interface_port device_if scki_p scki_p Output 1
-  add_interface_port device_if scki_n scki_n Output 1
-  add_interface_port device_if scko_p scko_p Input 1
-  add_interface_port device_if scko_n scko_n Input 1
-  add_interface_port device_if sdi_p sdi_p Output 1
-  add_interface_port device_if sdi_n sdi_n Output 1
-  add_interface_port device_if sdo_p sdo_p Input 1
-  add_interface_port device_if sdo_n sdo_n Input 1
+
+  set interface [get_parameter_value LVDS_CMOS_N]
+  switch $interface {
+    "0" { ;# cmos
+        add_interface_port device_if scki scki Output 1
+        add_interface_port device_if scko scko Input 1
+        add_interface_port device_if sdi sdi Output 1
+        add_interface_port device_if sdo sdo Input 8}
+    "1" { ;# lvds
+        add_interface_port device_if scki_p scki_p Output 1
+        add_interface_port device_if scki_n scki_n Output 1
+        add_interface_port device_if scko_p scko_p Input 1
+        add_interface_port device_if scko_n scko_n Input 1
+        add_interface_port device_if sdi_p sdi_p Output 1
+        add_interface_port device_if sdi_n sdi_n Output 1
+        add_interface_port device_if sdo_p sdo_p Input 1
+        add_interface_port device_if sdo_n sdo_n Input 1}
+  }
 
   # clock
   ad_interface clock external_clk input 1
