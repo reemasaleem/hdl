@@ -160,7 +160,7 @@ HDL project from the repository:
    Replace the **path_to** string with your path to the installation folder
    and the **tools version** with the proper one!
 
-   .. warning::
+   .. caution::
 
       Before building any project, it is necessary to install
       the Linux version for Vivado (see ``How to install Vivado on WSL
@@ -303,14 +303,11 @@ using **git pull** or **git rebase** if you have local changes.
 Building the projects
 -------------------------------------------------------------------------------
 
-.. warning::
+.. caution::
 
    Before building any project, you must have the environment prepared and the
-   proper tools. See
-   `Tools`_ section
-   on what you need to download and
-   `Environment`_ section on how
-   to set-up your environment.
+   proper tools. See `Tools`_ section on what you need to download and
+   `Environment`_ section on how to set-up your environment.
 
 Building an Intel project
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -422,6 +419,43 @@ Linux build. The 'sof' file is used to program the device.
 
       :~$ sudo swapoff -v /swapfile
 
+.. dropdown:: Building manually in Quartus GUI
+
+   .. warning::
+
+      We do not recommend using this flow, in general people are losing a lot
+      of valuable time and nerve during this process.
+
+   There is no need to build any library for Quartus. However, you do need
+   to specify the IP search path for QSYS. This is a global property, so
+   only need to do it once. If you have multiple paths simply add to it.
+   You get to this menu from the **Tools->Options**. The tool then parses
+   these directories and picks up a **\_hw.tcl** file (e.g.
+   axi_ad9250_hw.tcl). The peripherals should show up on QSYS library.
+
+   .. dropdown:: Screenshots
+
+      |image13|
+
+   You may now run the project (generate the sof and software hand-off
+   files) on Quartus. Open the GUI and select TCL console. At the prompt
+   change the directory to where the project is, and source the
+   **system_project.tcl** file.
+
+   .. code-block:: bash
+
+      cd c:/github/hdl/projects/daq2/a10soc
+      source ./system_project.tcl
+
+   You will see commands being executed, the script uses a board design in
+   QSYS, generate all the IP targets, synthesize the netlist and
+   implementation.
+
+   .. dropdown:: Screenshots
+
+      |image14|
+      |image15|
+
 Building a Xilinx project
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -474,7 +508,7 @@ VCU118 once compiled, it will be reused on other projects. Using the IP
 cache will speed up the re-compiles of every project in OOC mode since
 the cache is not cleared as with normal compile flow.
 
-.. warning::
+.. caution::
 
    Starting with Vivado 2020.2, Out-of-Context is the
    default mode. There is no need to set ADI_USE_OOC_SYNTHESIS variable.
@@ -569,8 +603,8 @@ Starting with Vivado 2019.3, the output file extension was changed from
 
       $RDI_PROG" "$@" crash" "Killed "$RDI_PROG" "$@"
 
-   This error may appear because your device does not have enough
-   RAM memory to build your FPGA design.
+      This error may appear because your device does not have enough
+      RAM memory to build your FPGA design.
 
    For example, the project AD-FMCDAQ3-EBZ with Virtex UltraScale+ VCU118
    (XCVU9P device) requires 20GB (typical memory) and a peak of 32GB RAM
@@ -603,6 +637,53 @@ Starting with Vivado 2019.3, the output file extension was changed from
    .. code-block:: bash
 
       :~$ sudo swapoff -v /swapfile
+
+.. dropdown:: Building manually in Vivado GUI
+
+   .. warning::
+
+      We do not recommend using this flow, in general people are losing a lot
+      of valuable time and nerve during this process.
+
+   In Vivado (Xilinx projects), **you must build all the required libraries**
+   for your targeted project. Open the GUI and at the TCL console change
+   the directory to where the libraries are, then source the '\_ip.tcl'
+   file.
+
+   .. code-block::
+
+      cd c:/github/hdl/library/axi_ltc2387
+      source ./axi_ltc2387_ip.tcl
+
+   You will see commands being executed, and the GUI will change into a
+   project window. There is nothing to do here, you could browse the source
+   if you prefer to do synthesis as stand-alone and such things. After
+   you're done, quit and change the directory to the next library and
+   continue the process.
+
+   .. dropdown:: Screenshots
+
+      |image16|
+      |image17|
+
+   After you built all the required libraries for your project, you can run
+   the project (generate bitstream and export the design to SDK). This is
+   the same procedure as above except for changes in path and Tcl file
+   names:
+
+   .. code-block:: bash
+
+      cd c:/github/hdl/projects/cn0577/zed
+      source ./system_project.tcl
+
+   Same behavior as above, the GUI will change into a project window. The
+   script will create a board design in IPI, generate all the IP targets,
+   synthesize the netlist and implementation.
+
+   .. dropdown:: Screenshots
+
+      |image18|
+      |image19|
 
 Supported targets of ``make`` command
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -872,91 +953,6 @@ More info on how to generate this file you will find in the
 
    You can download the script by accessing the following link:
    `build_boot_bin.sh <https://wiki.analog.com/resources/tools-software/linux-software/build-the-zynq-boot-image>`__.
-
-Building manually
--------------------------------------------------------------------------------
-
-.. warning::
-
-   We do not recommend using this flow, in
-   general people are losing a lot of valuable time and nerve during this
-   process.
-
-Building manually in Quartus GUI
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-There is no need to build any library for Quartus. However, you do need
-to specify the IP search path for QSYS. This is a global property, so
-only need to do it once. If you have multiple paths simply add to it.
-You get to this menu from the **Tools->Options**. The tool then parses
-these directories and picks up a **\_hw.tcl** file (e.g.
-axi_ad9250_hw.tcl). The peripherals should show up on QSYS library.
-
-.. dropdown:: Screenshots
-
-   |image13|
-
-You may now run the project (generate the sof and software hand-off
-files) on Quartus. Open the GUI and select TCL console. At the prompt
-change the directory to where the project is, and source the
-**system_project.tcl** file.
-
-.. code-block:: bash
-
-   cd c:/github/hdl/projects/daq2/a10soc
-   source ./system_project.tcl
-
-You will see commands being executed, the script uses a board design in
-QSYS, generate all the IP targets, synthesize the netlist and
-implementation.
-
-.. dropdown:: Screenshots
-
-   |image14|
-   |image15|
-
-Building manually in Vivado GUI
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-In Vivado (Xilinx projects), you must build all the required libraries
-for your targeted project. Open the GUI and at the TCL console change
-the directory to where the libraries are, then source the '\_ip.tcl'
-file.
-
-.. code-block::
-
-   cd c:/github/hdl/library/axi_ltc2387
-   source ./axi_ltc2387_ip.tcl
-
-You will see commands being executed, and the GUI will change into a
-project window. There is nothing to do here, you could browse the source
-if you prefer to do synthesis as stand-alone and such things. After
-you're done, quit and change the directory to the next library and
-continue the process.
-
-.. dropdown:: Screenshots
-
-   |image16|
-   |image17|
-
-After you built all the required libraries for your project, you can run
-the project (generate bitstream and export the design to SDK). This is
-the same procedure as above except for changes in path and Tcl file
-names:
-
-.. code-block:: bash
-
-   cd c:/github/hdl/projects/cn0577/zed
-   source ./system_project.tcl
-
-Same behavior as above, the GUI will change into a project window. The
-script will create a board design in IPI, generate all the IP targets,
-synthesize the netlist and implementation.
-
-.. dropdown:: Screenshots
-
-   |image18|
-   |image19|
 
 References
 -------------------------------------------------------------------------------
