@@ -209,6 +209,23 @@ class directive_base(Directive):
 
 		return (content, label)
 
+class directive_collapsible(directive_base):
+	option_spec = {'path': directives.unchanged}
+	required_arguments = 1
+	optional_arguments = 0
+
+	def run(self):
+		self.assert_has_content()
+
+		env = self.state.document.settings.env
+		self.current_doc = env.doc2path(env.docname)
+
+		node = node_div()
+
+		content, _ = self.collapsible(node, self.arguments[0].strip())
+		self.state.nested_parse(self.content, self.content_offset, content)
+
+		return [ node ]
 
 class directive_interfaces(directive_base):
 	option_spec = {'path': directives.unchanged}
@@ -830,6 +847,7 @@ def manage_hdl_artifacts(app, env, docnames):
 	manage_hdl_regmaps(env, docnames)
 
 def setup(app):
+	app.add_directive('collapsible', directive_collapsible)
 	app.add_directive('hdl-parameters', directive_parameters)
 	app.add_directive('hdl-interfaces', directive_interfaces)
 	app.add_directive('hdl-regmap', directive_regmap)
